@@ -40,7 +40,7 @@ export default function Footer() {
           </a>
         </p>
         <p>
-          © {new Date().getFullYear()} {CHURCH_NAME} · {LOCATION}
+          © {CHURCH_NAME} · {LOCATION}
         </p>
         <p>{CHURCH_NAME} is a 501(c)(3) non-profit organization</p>
       </div>
