@@ -1,18 +1,13 @@
-export type NavLink = {
-  label: string;
-  href: string;
-  children?: { label: string; href: string }[];
-};
+import { NavLink } from "../types/navbar.type";
 
 export const NAV_LINKS: NavLink[] = [
   {
     label: "About",
     href: "/about",
-    children: [
-      { label: "About Us", href: "/about" },
-      { label: "What We Believe", href: "/beliefs" },
-      { label: "Calendar", href: "/calendar" },
-    ],
+  },
+  {
+    label: "Sermons",
+    href: "/pplc-sermons",
   },
   {
     label: "Ministries",
@@ -23,14 +18,9 @@ export const NAV_LINKS: NavLink[] = [
       { label: "Outreach", href: "/ministries/outreach" },
     ],
   },
-  { label: "Sermons", href: "/sermons" },
   {
-    label: "Contact",
-    href: "/contact",
-    children: [
-      { label: "General Contact", href: "/contact" },
-      { label: "Prayer Request", href: "/prayer" },
-    ],
+    label: "Events",
+    href: "/events",
   },
 ];
 
@@ -39,3 +29,16 @@ export const SOCIAL_LINKS = [
   { label: "Facebook", href: "https://facebook.com/", icon: "facebook" },
   { label: "Instagram", href: "https://instagram.com/", icon: "instagram" },
 ] as const;
+
+// Short blurbs shown in the About mega menu (keyed by href)
+export const DESCRIPTIONS: Record<string, string> = {
+  "/about": "Our story, our people and our heart for the community.",
+  "/beliefs": "The truths of Scripture that anchor everything we do.",
+  "/calendar": "Services, groups and events happening near you.",
+};
+
+export const SOCIALS = [
+  { name: "youtube", href: "#", label: "YouTube" },
+  { name: "facebook", href: "#", label: "Facebook" },
+  { name: "instagram", href: "#", label: "Instagram" },
+];

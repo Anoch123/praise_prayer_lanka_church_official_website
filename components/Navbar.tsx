@@ -2,51 +2,18 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { NAV_LINKS, SOCIAL_LINKS } from "@/lib/constants/navbar";
-
-const CHURCH_NAME = "Grace Community Church"; // TODO
-
-function SocialIcon({ name }: { name: string }) {
-  const paths: Record<string, string> = {
-    youtube:
-      "M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12 31 31 0 0 0 1 16.8a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1c.4-1.6.5-3.2.5-4.8s-.1-3.2-.5-4.8ZM9.7 15.1V8.9l5.8 3.1-5.8 3.1Z",
-    facebook:
-      "M13.5 21v-8h2.7l.4-3.2h-3.1V7.8c0-.9.3-1.5 1.6-1.5h1.6V3.4c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.4-4 4.1v2.4H7.6V13h2.7v8h3.2Z",
-    instagram:
-      "M12 7.3A4.7 4.7 0 1 0 12 16.7 4.7 4.7 0 0 0 12 7.3Zm0 7.7a3 3 0 1 1 0-6 3 3 0 0 1 0 6Zm5-7.9a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0ZM21 12c0-2.4 0-2.7-.1-3.7-.1-1-.3-1.8-.7-2.4a4 4 0 0 0-1.6-1.6c-.6-.4-1.4-.6-2.4-.7C15.2 3.5 14.9 3.5 12.5 3.5h-1c-2.4 0-2.7 0-3.7.1-1 .1-1.8.3-2.4.7a4 4 0 0 0-1.6 1.6c-.4.6-.6 1.4-.7 2.4C3 8.3 3 8.6 3 11v2c0 2.4 0 2.7.1 3.7.1 1 .3 1.8.7 2.4a4 4 0 0 0 1.6 1.6c.6.4 1.4.6 2.4.7 1 .1 1.3.1 3.7.1h1c2.4 0 2.7 0 3.7-.1 1-.1 1.8-.3 2.4-.7a4 4 0 0 0 1.6-1.6c.4-.6.6-1.4.7-2.4.1-1 .1-1.3.1-3.7Z",
-  };
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d={paths[name]} />
-    </svg>
-  );
-}
-
-function Chevron({ open }: { open: boolean }) {
-  return (
-    <svg
-      width="15"
-      height="15"
-      viewBox="0 0 10 10"
-      fill="none"
-      className={`shrink-0 transition-transform duration-200 ease-out ${open ? "rotate-180" : ""}`}
-    >
-      <path
-        d="M1.5 3.5L5 7L8.5 3.5"
-        stroke="currentColor"
-        strokeWidth="1.4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
+import Image from "next/image";
+import { DESCRIPTIONS, NAV_LINKS, SOCIALS } from "@/lib/constants/navbar";
+import { common_images } from "@/lib/constants/common_images";
+import { Arrow, Chevron, Cross, SocialIcon } from "@/components/icons";
+import { common_texts } from "@/lib/constants/common_text";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [openDesktopMenu, setOpenDesktopMenu] = useState<string | null>(null);
   const [openMobileMenu, setOpenMobileMenu] = useState<string | null>(null);
-  const desktopMenuRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -60,100 +27,54 @@ export default function Navbar() {
   }, [open]);
 
   useEffect(() => {
-    function handleClick(e: MouseEvent) {
-      if (
-        desktopMenuRef.current &&
-        !desktopMenuRef.current.contains(e.target as Node)
-      ) {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    function onDown(e: MouseEvent) {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
         setOpenDesktopMenu(null);
       }
     }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setOpenDesktopMenu(null);
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
   }, []);
 
   return (
-    <div
-      className={`fixed z-50 flex flex-col overflow-hidden bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] md:left-1/2 md:right-auto md:top-6 md:h-16 md:w-[calc(100%-3rem)] md:max-w-6xl md:-translate-x-1/2 md:overflow-visible md:rounded-full ${
-        open
-          ? "inset-0 h-[100dvh] rounded-none"
-          : "inset-x-6 top-6 h-16 rounded-[32px]"
-      }`}
-    >
-      <div
-        className={`flex h-16 w-full shrink-0 items-center justify-between px-10 transition-[margin] duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] md:px-6 md:!mt-0 md:transition-none ${
-          open ? "mt-6" : "mt-0"
-        }`}
+    <>
+      <header
+        ref={headerRef}
+        className="fixed inset-x-0 top-0 z-50 font-sans"
       >
-        <Link
-          href="/"
-          onClick={() => setOpen(false)}
-          className="font-serif text-[22px] font-semibold tracking-tight text-slate-900 md:text-[20px]"
+        {/* ───────── Utility strip (desktop only, collapses on scroll) ───────── */}
+        {/* <div
+          className={`hidden overflow-hidden bg-[#1c1411] text-stone-300 transition-[max-height,opacity] duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] md:block ${
+            scrolled ? "max-h-0 opacity-0" : "max-h-10 opacity-100"
+          }`}
         >
-          {CHURCH_NAME}
-        </Link>
-
-        {/* Desktop nav */}
-        <nav ref={desktopMenuRef} className="hidden items-center gap-9 md:flex">
-          {NAV_LINKS.map((link) => {
-            const hasChildren = !!link.children?.length;
-            const isOpen = openDesktopMenu === link.href;
-
-            if (!hasChildren) {
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-[17px] font-medium text-slate-800 transition-colors hover:text-red-600"
-                >
-                  {link.label}
-                </Link>
-              );
-            }
-
-            return (
-              <div key={link.href} className="relative">
-                <button
-                  type="button"
-                  onClick={() =>
-                    setOpenDesktopMenu((v) => (v === link.href ? null : link.href))
-                  }
-                  aria-expanded={isOpen}
-                  className="flex items-center gap-2 text-[17px] font-medium text-slate-800 transition-colors hover:text-red-600"
-                >
-                  {link.label}
-                  <Chevron open={isOpen} />
-                </button>
-
-                <div
-                  className={`absolute left-1/2 top-full w-60 -translate-x-1/2 pt-4 transition-all duration-200 ease-out ${
-                    isOpen
-                      ? "pointer-events-auto translate-y-0 opacity-100"
-                      : "pointer-events-none -translate-y-1 opacity-0"
-                  }`}
-                >
-                  <div className="rounded-2xl border border-slate-100 bg-white p-2 shadow-[0_10px_30px_rgba(0,0,0,0.15)]">
-                    {link.children!.map((child) => (
-                      <Link
-                        key={child.href}
-                        href={child.href}
-                        onClick={() => setOpenDesktopMenu(null)}
-                        className="block rounded-xl px-4 py-2.5 text-[16px] font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900"
-                      >
-                        {child.label}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </nav>
-
-        {/* Desktop right side: socials + Partner + Give */}
-        <div className="hidden items-center gap-4 md:flex">
-          <div className="flex items-center gap-3 text-slate-500">
-            {SOCIAL_LINKS.map((s) => (
+          <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-8 text-[12.5px] tracking-wide">
+            <div className="flex items-center gap-6">
+              <span className="flex items-center gap-2">
+                <Cross className="text-red-500" />
+                <span className="font-medium text-stone-100">{common_texts.Service_time}</span>
+              </span>
+              <span className="hidden text-stone-400 lg:inline">{common_texts.Church_addr}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              {SOCIAL_LINKS.map((s) => (
               <a
                 key={s.label}
                 href={s.href}
@@ -165,61 +86,211 @@ export default function Navbar() {
                 <SocialIcon name={s.icon} />
               </a>
             ))}
+            </div>
           </div>
-          <Link
-            href="/partner"
-            className="text-sm font-semibold text-slate-800 transition-colors hover:text-red-600"
-          >
-            Partner
-          </Link>
-          <Link
-            href="/give"
-            className="inline-flex items-center rounded-full bg-[#ff0000] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-red-700"
-          >
-            Give
-          </Link>
-        </div>
+        </div> */}
 
-        {/* Mobile toggle */}
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          aria-label="Toggle menu"
-          className="flex h-9 w-9 items-center justify-center text-slate-900 md:hidden"
+        {/* ───────── Main bar ───────── */}
+        <div
+          className={`relative border-b transition-all duration-300 ${
+            scrolled || open || openDesktopMenu
+              ? "border-stone-200 bg-[#fbf7f0]/95 shadow-[0_8px_30px_rgba(28,20,17,0.08)] backdrop-blur-md"
+              : "border-stone-200/70 bg-[#fbf7f0]"
+          }`}
         >
-          <span className="relative block h-4 w-5">
-            <span
-              className={`absolute left-0 top-0 h-[1.5px] w-5 bg-current transition-transform duration-300 ease-out ${
-                open ? "translate-y-[7px] rotate-45" : ""
-              }`}
-            />
-            <span
-              className={`absolute left-0 top-[7px] h-[1.5px] w-5 bg-current transition-opacity duration-200 ease-out ${
-                open ? "opacity-0" : "opacity-100"
-              }`}
-            />
-            <span
-              className={`absolute left-0 top-[14px] h-[1.5px] w-5 bg-current transition-transform duration-300 ease-out ${
-                open ? "-translate-y-[7px] -rotate-45" : ""
-              }`}
-            />
-          </span>
-        </button>
-      </div>
+          <div
+            className={`mx-auto flex max-w-7xl items-center justify-between px-6 transition-[height] duration-300 md:px-8 ${
+              scrolled ? "h-[68px]" : "h-[84px]"
+            }`}
+          >
+            {/* Brand */}
+            <Link
+              href="/"
+              onClick={() => {
+                setOpen(false);
+                setOpenDesktopMenu(null);
+              }}
+              className="flex items-center gap-3"
+            >
+              <Image
+                src={common_images.App_logo}
+                width={80}
+                height={80}
+                alt={`${common_texts.App_name} logo`}
+                className={`w-auto transition-all duration-300 ${scrolled ? "h-10" : "h-12"}`}
+              />
+              {/* <span className="hidden flex-col leading-none lg:flex">
+                <span className="font-serif text-[19px] font-semibold tracking-tight text-[#1c1411]">
+                  {common_texts.App_name}
+                </span>
+                <span className="mt-1.5 text-[10.5px] font-semibold uppercase tracking-[0.28em] text-red-600">
+                  Come as you are
+                </span>
+              </span> */}
+            </Link>
 
-      {/* Mobile menu */}
+            {/* Desktop nav */}
+            <nav className="hidden items-center gap-10 md:flex">
+              {NAV_LINKS.map((link) => {
+                const hasChildren = !!link.children?.length;
+                const isOpen = openDesktopMenu === link.href;
+                const base =
+                  "group relative flex items-center gap-2 py-2 text-[15px] font-semibold uppercase tracking-[0.14em] text-[#1c1411] transition-colors hover:text-red-600";
+                const underline = (
+                  <span
+                    className={`absolute -bottom-0.5 left-0 h-[2px] bg-red-600 transition-all duration-300 ${
+                      isOpen ? "w-full" : "w-0 group-hover:w-full"
+                    }`}
+                  />
+                );
+
+                if (!hasChildren) {
+                  return (
+                    <Link key={link.href} href={link.href} className={base}>
+                      {link.label}
+                      {underline}
+                    </Link>
+                  );
+                }
+
+                return (
+                  <button
+                    key={link.href}
+                    type="button"
+                    onClick={() =>
+                      setOpenDesktopMenu((v) => (v === link.href ? null : link.href))
+                    }
+                    aria-expanded={isOpen}
+                    aria-haspopup="true"
+                    className={base}
+                  >
+                    {link.label}
+                    <Chevron open={isOpen} />
+                    {underline}
+                  </button>
+                );
+              })}
+            </nav>
+
+            {/* Desktop CTAs */}
+            <div className="hidden items-center gap-3 md:flex">
+              <Link
+                href="/give"
+                className="inline-flex items-center gap-2 rounded-full bg-[#ff0000] px-6 py-2.5 text-[13px] font-semibold uppercase tracking-[0.12em] text-white shadow-[0_6px_16px_rgba(255,0,0,0.25)] transition-all hover:-translate-y-px hover:bg-red-700"
+              >
+                Contact Us
+              </Link>
+            </div>
+
+            {/* Mobile toggle */}
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              aria-expanded={open}
+              aria-label="Toggle menu"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#1c1411]/15 text-[#1c1411] md:hidden"
+            >
+              <span className="relative block h-3.5 w-5">
+                <span
+                  className={`absolute left-0 top-0 h-[1.5px] w-5 bg-current transition-transform duration-300 ease-out ${
+                    open ? "translate-y-[6px] rotate-45" : ""
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 top-[12px] h-[1.5px] w-5 bg-current transition-transform duration-300 ease-out ${
+                    open ? "-translate-y-[6px] -rotate-45" : ""
+                  }`}
+                />
+              </span>
+            </button>
+          </div>
+
+          {/* ───────── Desktop mega menu ───────── */}
+          {NAV_LINKS.filter((l) => l.children?.length).map((link) => {
+            const isOpen = openDesktopMenu === link.href;
+            return (
+              <div
+                key={link.href}
+                className={`absolute inset-x-0 top-full hidden transition-all duration-300 ease-out md:block ${
+                  isOpen
+                    ? "pointer-events-auto translate-y-0 opacity-100"
+                    : "pointer-events-none -translate-y-2 opacity-0"
+                }`}
+              >
+                <div className="border-b border-stone-200 bg-[#fbf7f0] shadow-[0_30px_50px_rgba(28,20,17,0.12)]">
+                  <div className="mx-auto grid max-w-7xl grid-cols-12 gap-10 px-8 py-10">
+                    {/* Featured card */}
+                    <div className="relative col-span-4 overflow-hidden rounded-3xl bg-[#1c1411] p-8 text-white">
+                      <Cross className="absolute -right-3 -top-4 h-40 w-auto rotate-12 text-white/[0.06]" />
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-red-400">
+                        New here?
+                      </p>
+                      <h3 className="mt-4 font-serif text-[28px] leading-tight">
+                        There&apos;s a seat saved for you this Sunday.
+                      </h3>
+                      <p className="mt-3 text-sm text-stone-400">{common_texts.Service_time}</p>
+                      <Link
+                        href="/partner"
+                        onClick={() => setOpenDesktopMenu(null)}
+                        className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-[13px] font-semibold uppercase tracking-[0.1em] text-[#1c1411] transition-colors hover:bg-red-600 hover:text-white"
+                      >
+                        Plan your visit <Arrow />
+                      </Link>
+                    </div>
+
+                    {/* Link list */}
+                    <div className="col-span-8">
+                      <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.3em] text-stone-500">
+                        {link.label}
+                      </p>
+                      <div className="grid grid-cols-1 gap-x-8 lg:grid-cols-2">
+                        {link.children!.map((child, i) => (
+                          <Link
+                            key={child.href + child.label}
+                            href={child.href}
+                            onClick={() => setOpenDesktopMenu(null)}
+                            className="group flex items-start gap-4 rounded-2xl p-4 transition-colors hover:bg-white"
+                          >
+                            <span className="font-serif text-[15px] italic text-red-600">
+                              0{i + 1}
+                            </span>
+                            <span className="flex-1">
+                              <span className="block font-serif text-[21px] font-semibold text-[#1c1411]">
+                                {child.label}
+                              </span>
+                              <span className="mt-1 block text-sm leading-relaxed text-stone-500">
+                                {DESCRIPTIONS[child.href] ?? ""}
+                              </span>
+                            </span>
+                            <span className="mt-2 -translate-x-2 text-red-600 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
+                              <Arrow />
+                            </span>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </header>
+
+      {/* ───────── Mobile full-screen menu ───────── */}
       <div
-        className={`flex flex-1 flex-col overflow-y-auto px-10 pb-8 md:hidden ${
-          open ? "pointer-events-auto" : "pointer-events-none"
+        className={`fixed inset-0 z-40 flex flex-col overflow-y-auto bg-[#fbf7f0] pt-[84px] transition-[clip-path] duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] md:hidden ${
+          open
+            ? "pointer-events-auto [clip-path:inset(0_0_0_0)]"
+            : "pointer-events-none [clip-path:inset(0_0_100%_0)]"
         }`}
       >
-        <nav className="flex flex-col">
+        <nav className="flex flex-col px-6 pt-4">
           {NAV_LINKS.map((link, i) => {
             const hasChildren = !!link.children?.length;
             const isOpen = openMobileMenu === link.href;
-            const delay = { transitionDelay: open ? `${150 + i * 50}ms` : "0ms" };
-            const anim = open ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0";
+            const delay = { transitionDelay: open ? `${200 + i * 60}ms` : "0ms" };
+            const anim = open ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0";
 
             if (!hasChildren) {
               return (
@@ -228,8 +299,9 @@ export default function Navbar() {
                   href={link.href}
                   onClick={() => setOpen(false)}
                   style={delay}
-                  className={`border-b border-slate-200 py-7 text-[26px] font-medium transition-all duration-300 ease-out ${anim}`}
+                  className={`flex items-baseline gap-4 border-b border-stone-200 py-6 font-serif text-[34px] font-semibold text-[#1c1411] transition-all duration-500 ease-out ${anim}`}
                 >
+                  <span className="text-sm italic text-red-600">0{i + 1}</span>
                   {link.label}
                 </Link>
               );
@@ -239,7 +311,7 @@ export default function Navbar() {
               <div
                 key={link.href}
                 style={delay}
-                className={`border-b border-slate-200 transition-all duration-300 ease-out ${anim}`}
+                className={`border-b border-stone-200 transition-all duration-500 ease-out ${anim}`}
               >
                 <button
                   type="button"
@@ -247,9 +319,12 @@ export default function Navbar() {
                     setOpenMobileMenu((v) => (v === link.href ? null : link.href))
                   }
                   aria-expanded={isOpen}
-                  className="flex w-full items-center justify-between py-7 text-[26px] font-medium"
+                  className="flex w-full items-baseline justify-between py-6 font-serif text-[34px] font-semibold text-[#1c1411]"
                 >
-                  {link.label}
+                  <span className="flex items-baseline gap-4">
+                    <span className="text-sm italic text-red-600">0{i + 1}</span>
+                    {link.label}
+                  </span>
                   <Chevron open={isOpen} />
                 </button>
                 <div
@@ -258,13 +333,13 @@ export default function Navbar() {
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <div className="flex flex-col px-4 pb-6">
+                    <div className="mb-5 ml-9 flex flex-col border-l-2 border-red-600/30 pl-5">
                       {link.children!.map((child) => (
                         <Link
-                          key={child.href}
+                          key={child.href + child.label}
                           href={child.href}
                           onClick={() => setOpen(false)}
-                          className="py-2.5 text-[22px] font-medium text-slate-600"
+                          className="py-2.5 text-[20px] font-medium text-stone-600 transition-colors active:text-red-600"
                         >
                           {child.label}
                         </Link>
@@ -278,36 +353,43 @@ export default function Navbar() {
         </nav>
 
         <div
-          style={{
-            transitionDelay: open ? `${150 + NAV_LINKS.length * 50}ms` : "0ms",
-          }}
-          className={`flex flex-col gap-3 pt-6 transition-all duration-300 ease-out ${
-            open ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
+          style={{ transitionDelay: open ? `${200 + NAV_LINKS.length * 60 + 60}ms` : "0ms" }}
+          className={`mt-auto flex flex-col gap-3 px-6 pb-8 pt-8 transition-all duration-500 ease-out ${
+            open ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
           }`}
         >
-          <Link
-            href="/give"
-            onClick={() => setOpen(false)}
-            className="flex w-full items-center justify-center rounded-[10px] bg-[#ff0000] px-5 py-3.5 text-[20px] font-semibold text-white transition-colors hover:bg-red-700"
-          >
-            Give
-          </Link>
-          <Link
-            href="/partner"
-            onClick={() => setOpen(false)}
-            className="flex w-full items-center justify-center rounded-[10px] border border-slate-300 px-5 py-3.5 text-[20px] font-semibold text-slate-800"
-          >
-            Partner
-          </Link>
-          <div className="flex justify-center gap-6 pt-3 text-slate-500">
-            {SOCIAL_LINKS.map((s) => (
-              <a key={s.label} href={s.href} target="_blank" rel="noreferrer" aria-label={s.label}>
-                <SocialIcon name={s.icon} />
+          <div className="rounded-2xl bg-[#1c1411] p-5 text-white">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-red-400">
+              Join us
+            </p>
+            <p className="mt-2 font-serif text-xl">{common_texts.Service_time}</p>
+            <p className="mt-1 text-sm text-stone-400">{common_texts.Church_addr}</p>
+          </div>
+
+          <div className="flex gap-3">
+            <Link
+              href="/give"
+              onClick={() => setOpen(false)}
+              className="flex flex-1 items-center justify-center rounded-full bg-[#ff0000] px-5 py-4 text-[15px] font-semibold uppercase tracking-[0.1em] text-white"
+            >
+              Contact Us
+            </Link>
+          </div>
+
+          <div className="mt-2 flex items-center justify-center gap-2 text-stone-500">
+            {SOCIALS.map((s) => (
+              <a
+                key={s.name}
+                href={s.href}
+                aria-label={s.label}
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-stone-300 transition-colors active:bg-stone-200"
+              >
+                <SocialIcon name={s.name} />
               </a>
             ))}
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
