@@ -92,7 +92,7 @@ export default function Header() {
           </div>
 
           {/* Right: first-visit card (no video here – messages live in the section below) */}
-          <aside className="lg:col-span-5 lg:pl-6 xl:pl-12">
+          <aside className="hidden md:flex md:col-span-5 lg:pl-6 xl:pl-12">
             <div className="relative overflow-hidden rounded-[28px] border border-white/15 bg-white/10 p-8 text-[#fbf7f0] shadow-[0_40px_80px_rgba(0,0,0,0.45)] backdrop-blur-xl md:p-9">
               <Cross className="pointer-events-none absolute -right-4 -top-5 h-44 w-auto rotate-12 text-white/[0.06]" />
 
