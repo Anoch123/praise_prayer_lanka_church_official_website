@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/Navbar"; // remove if your layout already renders the navbar
-// import FeaturedSermon from "@/components/FeaturedSermon";
+import Navbar from "@/components/Navbar";
 import VideoLibrary from "@/components/VideoLibrary";
 import { getAllVideos } from "@/lib/utils/youtube";
 import FeaturedSermon from "@/components/FeaturedSermon";
 import Footer from "@/components/footer";
-
-// export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Sermons & Messages",

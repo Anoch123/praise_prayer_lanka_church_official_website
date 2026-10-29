@@ -6,7 +6,7 @@ import Image from "next/image";
 import { DESCRIPTIONS, NAV_LINKS, SOCIALS } from "@/lib/constants/navbar";
 import { common_images } from "@/lib/constants/common_images";
 import { Arrow, Chevron, Cross, SocialIcon } from "@/components/icons";
-import { common_texts } from "@/lib/constants/common_text";
+import { COMMON_TEXTS } from "@/lib/constants/helper_texts";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -116,7 +116,7 @@ export default function Navbar() {
                 src={common_images.App_logo}
                 width={80}
                 height={80}
-                alt={`${common_texts.App_name} logo`}
+                alt={`${COMMON_TEXTS.App_name} logo`}
                 className={`w-auto transition-all duration-300 ${scrolled ? "h-10" : "h-12"}`}
               />
               {/* <span className="hidden flex-col leading-none lg:flex">
@@ -228,7 +228,7 @@ export default function Navbar() {
                       <h3 className="mt-4 font-serif text-[28px] leading-tight">
                         There&apos;s a seat saved for you this Sunday.
                       </h3>
-                      <p className="mt-3 text-sm text-stone-400">{common_texts.Service_time}</p>
+                      <p className="mt-3 text-sm text-stone-400">{COMMON_TEXTS.Service_time}</p>
                       <Link
                         href="/partner"
                         onClick={() => setOpenDesktopMenu(null)}
@@ -362,8 +362,8 @@ export default function Navbar() {
             <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-red-400">
               Join us
             </p>
-            <p className="mt-2 font-serif text-xl">{common_texts.Service_time}</p>
-            <p className="mt-1 text-sm text-stone-400">{common_texts.Church_addr}</p>
+            <p className="mt-2 font-serif text-xl">{COMMON_TEXTS.Service_time}</p>
+            <p className="mt-1 text-sm text-stone-400">{COMMON_TEXTS.Church_addr}</p>
           </div>
 
           <div className="flex gap-3">

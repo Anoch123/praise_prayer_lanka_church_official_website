@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { common_texts } from "@/lib/constants/common_text";
+import { COMMON_TEXTS } from "@/lib/constants/helper_texts";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: common_texts.App_name,
-  description: common_texts.App_description,
+  title: COMMON_TEXTS.App_name,
+  description: COMMON_TEXTS.App_description,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

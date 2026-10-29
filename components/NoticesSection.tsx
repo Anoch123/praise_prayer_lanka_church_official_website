@@ -1,64 +1,7 @@
 import Link from "next/link";
 import { NOTICES } from "@/lib/constants/home";
-
-function Cross({ className = "" }: { className?: string }) {
-  return (
-    <svg width="14" height="18" viewBox="0 0 14 18" fill="currentColor" className={className} aria-hidden="true">
-      <path d="M5.5 0h3v5.5H14v3H8.5V18h-3V8.5H0v-3h5.5V0Z" />
-    </svg>
-  );
-}
-
-function Arrow() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-      <path
-        d="M3 8h10M9 4l4 4-4 4"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function Pin() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M14.5 2.5l7 7-2.2.7-3.6 3.6.3 4.4-1.7 1.7-4.5-4.5-5.6 5.6-1-1 5.6-5.6-4.5-4.5L5.5 8.2l4.4.3 3.6-3.6.7-2.4Z" />
-    </svg>
-  );
-}
-
-function Calendar() {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <rect x="3.5" y="5" width="17" height="15" rx="2.5" />
-      <path d="M8 3v4M16 3v4M3.5 10h17" />
-    </svg>
-  );
-}
-
-// If the date string can be parsed, show it as a day / month block; otherwise show a calendar icon.
-function parseDate(input: string): { day: string; month: string } | null {
-  const d = new Date(input);
-  if (isNaN(d.getTime())) return null;
-  return {
-    day: String(d.getDate()).padStart(2, "0"),
-    month: d.toLocaleDateString("en-US", { month: "short" }),
-  };
-}
+import { Arrow, Calendar, Cross, Pin } from "./icons";
+import { parseDate } from "@/lib/utils/common-functions";
 
 export default function NoticesSection() {
   if (!NOTICES?.length) return null;

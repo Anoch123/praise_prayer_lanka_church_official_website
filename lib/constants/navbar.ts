@@ -3,7 +3,7 @@ import { NavLink } from "../types/navbar.type";
 export const NAV_LINKS: NavLink[] = [
   {
     label: "About",
-    href: "/about",
+    href: "/pplc-about-our-story",
   },
   {
     label: "Sermons",

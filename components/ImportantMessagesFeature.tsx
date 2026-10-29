@@ -2,22 +2,7 @@
 
 import { useState } from "react";
 import type { Video } from "@/lib/utils/youtube";
-
-function Cross({ className = "" }: { className?: string }) {
-  return (
-    <svg width="14" height="18" viewBox="0 0 14 18" fill="currentColor" className={className} aria-hidden="true">
-      <path d="M5.5 0h3v5.5H14v3H8.5V18h-3V8.5H0v-3h5.5V0Z" />
-    </svg>
-  );
-}
-
-function Play({ size = 30 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-      <path d="M4 2.5v11l9-5.5-9-5.5Z" />
-    </svg>
-  );
-}
+import { Cross, Play } from "./icons";
 
 export default function ImportantMessageFeature({ video }: { video: Video }) {
   const [playing, setPlaying] = useState(false);
@@ -87,7 +72,7 @@ export default function ImportantMessageFeature({ video }: { video: Video }) {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={`https://i.ytimg.com/vi/${video.id}/maxresdefault.jpg`}
+                  src={`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`}
                   onError={(e) => {
                     // maxres isn't available for every video – fall back to hqdefault
                     e.currentTarget.src = `https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`;

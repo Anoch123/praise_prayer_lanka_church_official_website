@@ -1,25 +1,7 @@
 import Link from "next/link";
 import Navbar from "./Navbar";
 import { Arrow, Cross } from "./icons";
-import { common_texts } from "@/lib/constants/common_text";
-
-// TODO: adjust to match your actual first-visit experience
-const FIRST_VISIT = [
-  {
-    title: "Come as you are",
-    text: "Dress comfortably. Friendly faces will greet you at the door and help you find your way.",
-  },
-  {
-    title: "Worship together",
-    text: "About an hour of uplifting worship, prayer and practical teaching from God's Word.",
-  },
-  {
-    title: "Stay and connect",
-    text: "Meet our team over tea after the service and learn about groups and ministries.",
-  },
-];
-
-const NEXT_GATHERING = "Sunday · 9:00 AM"; // TODO
+import { COMMON_TEXTS, FIRST_VISIT } from "@/lib/constants/helper_texts";
 
 export default function Header() {
   return (
@@ -46,7 +28,7 @@ export default function Header() {
           <div className="lg:col-span-7">
             <p className="flex items-center gap-4 text-[12px] font-semibold uppercase tracking-[0.32em] text-red-400">
               <span className="h-px w-12 bg-red-500" />
-              Welcome to {common_texts.App_name}
+              Welcome to {COMMON_TEXTS.App_name}
             </p>
 
             <h1 className="mt-6 font-serif text-[44px] font-semibold leading-[1.05] tracking-tight text-[#fbf7f0] sm:text-6xl md:text-7xl xl:text-[84px]">
@@ -62,7 +44,7 @@ export default function Header() {
 
             <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
               <Link
-                href="/partner"
+                href="/plan-a-visit"
                 className="group inline-flex items-center justify-center gap-3 rounded-full bg-[#ff0000] px-9 py-4 text-[13px] font-semibold uppercase tracking-[0.14em] text-white shadow-[0_12px_32px_rgba(255,0,0,0.35)] transition-all hover:-translate-y-px hover:bg-red-700"
               >
                 Plan Your Visit
@@ -71,7 +53,7 @@ export default function Header() {
                 </span>
               </Link>
               <Link
-                href="/sermons"
+                href="/pplc-sermons"
                 className="inline-flex items-center justify-center gap-3 rounded-full border border-white/40 px-9 py-4 text-[13px] font-semibold uppercase tracking-[0.14em] text-[#fbf7f0] transition-colors hover:border-[#fbf7f0] hover:bg-[#fbf7f0] hover:text-[#1c1411]"
               >
                 Watch Sermons
@@ -120,17 +102,8 @@ export default function Header() {
                   <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-stone-400">
                     Next Gathering
                   </p>
-                  <p className="mt-1 font-serif text-lg font-semibold">{NEXT_GATHERING}</p>
+                  <p className="mt-1 font-serif text-lg font-semibold">{COMMON_TEXTS.Next_Gathering}</p>
                 </div>
-                <Link
-                  href="/partner"
-                  className="group inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.16em] transition-colors hover:text-red-400"
-                >
-                  What to expect
-                  <span className="transition-transform duration-300 group-hover:translate-x-1">
-                    <Arrow />
-                  </span>
-                </Link>
               </div>
             </div>
           </aside>
