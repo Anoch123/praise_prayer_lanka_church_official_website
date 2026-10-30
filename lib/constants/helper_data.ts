@@ -302,7 +302,7 @@ export const NAV_LINKS: NavLink[] = [
   },
   {
     label: "Events",
-    href: "/ppl-events",
+    href: "/pplc-events",
   },
 ];
 
@@ -316,7 +316,7 @@ export const SOCIAL_LINKS = [
 export const DESCRIPTIONS: Record<string, string> = {
   "/about": "Our story, our people and our heart for the community.",
   "/beliefs": "The truths of Scripture that anchor everything we do.",
-  "/ppl-events": "Services, groups and events happening near you.",
+  "/pplc-events": "Services, groups and events happening near you.",
 };
 
 export const SOCIALS = [
@@ -351,7 +351,7 @@ export const VERSES = [
 
 export const GET_INVOLVED = [
   { label: "Plan a Visit", href: "/plan-a-visit" },
-  { label: "Upcoming Events", href: "/ppl-events" },
+  { label: "Upcoming Events", href: "/pplc-events" },
   { label: "Watch Sermons", href: "/pplc-sermons" },
 ];
 

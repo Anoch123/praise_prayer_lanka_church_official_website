@@ -136,7 +136,7 @@ export default function Header() {
               </span>
             </p>
             <Link
-              href="/calendar"
+              href="/pplc-events"
               className="group inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#fbf7f0] transition-colors hover:text-red-400"
             >
               Upcoming Events
