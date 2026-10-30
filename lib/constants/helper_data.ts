@@ -1,4 +1,4 @@
-import { ChurchEvent, NavLink, WeeklyService } from "../types/helper.type";
+import { BandItem, ChurchEvent, Ministry, NavLink, Verse, WeeklyService } from "../types/helper.type";
 
 export const COMMON_TEXTS ={
   App_name : "Praise Prayer Lanka Church",
@@ -297,7 +297,6 @@ export const NAV_LINKS: NavLink[] = [
     children: [
       { label: "Kids", href: "/ministries/kids" },
       { label: "Youth", href: "/ministries/youth" },
-      { label: "Outreach", href: "/ministries/outreach" },
     ],
   },
   {
@@ -332,7 +331,24 @@ export const CHURCH_TZ_OFFSET_MINUTES = 330;
 export const SERVICE_DURATION_MINUTES = 90;
 export const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@lankachurch";
 
-export const VERSES = [
+// export const VERSES = [
+//   { text: "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.", ref: "John 3:16" },
+//   { text: "The Lord is my shepherd; I shall not want.", ref: "Psalm 23:1" },
+//   { text: "I can do all things through Christ which strengtheneth me.", ref: "Philippians 4:13" },
+//   { text: "Trust in the Lord with all thine heart; and lean not unto thine own understanding.", ref: "Proverbs 3:5" },
+//   { text: "Come unto me, all ye that labour and are heavy laden, and I will give you rest.", ref: "Matthew 11:28" },
+//   { text: "Fear thou not; for I am with thee: be not dismayed; for I am thy God.", ref: "Isaiah 41:10" },
+//   { text: "God is our refuge and strength, a very present help in trouble.", ref: "Psalm 46:1" },
+//   { text: "Thy word is a lamp unto my feet, and a light unto my path.", ref: "Psalm 119:105" },
+//   { text: "Let your light so shine before men, that they may see your good works, and glorify your Father which is in heaven.", ref: "Matthew 5:16" },
+//   { text: "Now faith is the substance of things hoped for, the evidence of things not seen.", ref: "Hebrews 11:1" },
+//   { text: "Be strong and of a good courage; be not afraid, neither be thou dismayed: for the Lord thy God is with thee whithersoever thou goest.", ref: "Joshua 1:9" },
+//   { text: "And now abideth faith, hope, charity, these three; but the greatest of these is charity.", ref: "1 Corinthians 13:13" },
+//   { text: "And we know that all things work together for good to them that love God.", ref: "Romans 8:28" },
+//   { text: "The Lord bless thee, and keep thee: the Lord make his face shine upon thee, and be gracious unto thee.", ref: "Numbers 6:24-25" },
+// ];
+
+export const VERSES: Verse[] = [
   { text: "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.", ref: "John 3:16" },
   { text: "The Lord is my shepherd; I shall not want.", ref: "Psalm 23:1" },
   { text: "I can do all things through Christ which strengtheneth me.", ref: "Philippians 4:13" },
@@ -395,3 +411,114 @@ export const phoneHref = `tel:${COMMON_TEXTS.Phone.replace(/[^\d+]/g, "")}`;
 export const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
   COMMON_TEXTS.Address,
 )}`;
+
+export const MINISTRIES: Ministry[] = [
+  {
+    slug: "kids",
+    name: "Kids Ministry",
+    heroTitle: "Kids",
+    heroAccent: "ministry.",
+    tagline: "A safe, joyful place to get to know Jesus",
+    cardText:
+      "Bible stories, songs, games and caring teachers for the youngest members of our church family.",
+    intro:
+      "Every child is precious to God, and every child is welcome here. Come and see how much fun learning about Jesus can be.",
+    about: [
+      "Our Kids Ministry is a happy, safe place where children hear the stories of the Bible, sing, play and make friends.",
+      "We work together with parents and families, so that what children learn on Sunday can be shared and lived out at home.",
+    ],
+    whatWeDo: [
+      {
+        title: "Bible stories",
+        text: "Clear, simple lessons that help children understand who God is and how much He loves them.",
+      },
+      {
+        title: "Songs & worship",
+        text: "Children sing, clap and praise God together in a joyful way.",
+      },
+      {
+        title: "Games & crafts",
+        text: "Hands-on activities that help the lesson stay in a child's heart and mind.",
+      },
+      {
+        title: "Caring teachers",
+        text: "Loving volunteers who know the children by name and pray for them.",
+      },
+    ],
+    values: [
+      "Every child is welcome",
+      "A safe and caring place",
+      "Families learning together",
+    ],
+    verse: {
+      text: "Suffer the little children to come unto me, and forbid them not: for of such is the kingdom of God.",
+      ref: "Mark 10:14 (KJV)",
+    },
+    // TODO: ages: "Ages …",
+    // TODO: meets: { day: "Sunday", time: "…", place: "…" },
+  },
+  {
+    slug: "youth",
+    name: "Youth Ministry",
+    heroTitle: "Youth",
+    heroAccent: "ministry.",
+    tagline: "A place to belong, grow and lead",
+    cardText:
+      "Friendship, Bible study, worship and service for teenagers and young people finding their faith.",
+    intro:
+      "Faith is for every age. Come as you are, ask your questions, make real friends and discover God's plan for your life.",
+    about: [
+      "Our Youth Ministry gives young people a place where they are known, heard and encouraged.",
+      "We open the Bible together, talk honestly about real life, and help each person grow in faith and take their place in the church.",
+    ],
+    whatWeDo: [
+      {
+        title: "Bible study & talks",
+        text: "Honest conversations about faith and life, where every question is welcome.",
+      },
+      {
+        title: "Worship",
+        text: "Praising God together through music and prayer.",
+      },
+      {
+        title: "Friendship & fun",
+        text: "Games, food and time together, so friendships grow strong.",
+      },
+      {
+        title: "Serving & leading",
+        text: "Chances to use your gifts, help others and grow as a leader.",
+      },
+    ],
+    values: [
+      "Come as you are",
+      "Every question is welcome",
+      "Growing in faith together",
+    ],
+    verse: {
+      text: "Let no man despise thy youth; but be thou an example of the believers, in word, in conversation, in charity, in spirit, in faith, in purity.",
+      ref: "1 Timothy 4:12 (KJV)",
+    },
+    // TODO: ages: "Ages …",
+    // TODO: meets: { day: "…", time: "…", place: "…" },
+  },
+];
+
+export const focusRing =
+  "focus:outline-none focus-visible:ring-4 focus-visible:ring-red-300";
+
+// Soft, friendly colours for each activity card
+export const CARD_STYLES = [
+  { bg: "bg-red-50", border: "border-red-200", emoji: "📖" },
+  { bg: "bg-amber-50", border: "border-amber-200", emoji: "🎵" },
+  { bg: "bg-orange-50", border: "border-orange-200", emoji: "🎨" },
+  { bg: "bg-rose-50", border: "border-rose-200", emoji: "💛" },
+];
+
+// Default quick links for the home page. Change the labels or links freely.
+export const HOME_BAND_ITEMS: BandItem[] = [
+  { label: "Plan a visit", href: "/plan-a-visit" },
+  { label: "Watch sermons", href: "/pplc-sermons" },
+  { label: "Ministries", href: "/ministries" },
+  { label: "Events", href: "/calendar" },
+  { label: "Give", href: "/give" },
+];

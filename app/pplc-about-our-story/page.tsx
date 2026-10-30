@@ -229,13 +229,13 @@ export default function PPLCAboutOurStoryPage() {
                 You do not have to agree with everything to visit us. Here are the core
                 beliefs that bring us together, explained simply.
               </p>
-              <Link
+              {/* <Link
                 href="/beliefs"
                 className="group mt-8 inline-flex items-center gap-3 rounded-full border border-white/40 px-8 py-3.5 text-[13px] font-semibold uppercase tracking-[0.14em] text-[#fbf7f0] transition-colors hover:border-[#fbf7f0] hover:bg-[#fbf7f0] hover:text-[#1c1411]"
               >
                 Read Our Full Beliefs
                 <span className="transition-transform duration-300 group-hover:translate-x-1"><Arrow /></span>
-              </Link>
+              </Link> */}
             </div>
           </div>
 

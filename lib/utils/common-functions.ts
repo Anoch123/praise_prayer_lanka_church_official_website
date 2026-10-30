@@ -1,5 +1,5 @@
 import { io } from "next/cache";
-import { CHURCH_TZ_OFFSET_MINUTES, SERVICE_DURATION_MINUTES, WEEK, WEEKLY_SERVICES } from "../constants/helper_data";
+import { CHURCH_TZ_OFFSET_MINUTES, MINISTRIES, SERVICE_DURATION_MINUTES, WEEK, WEEKLY_SERVICES } from "../constants/helper_data";
 import { Next } from "../types/helper.type";
 
 // If the date string can be parsed, show it as a day / month block; otherwise show a calendar icon.
@@ -39,4 +39,8 @@ export function compute(nowMs: number): Next {
 export default async function CurrentYear() {
   await io();
   return new Date().getFullYear();
+}
+
+export function getMinistry(slug: string) {
+  return MINISTRIES.find((m) => m.slug === slug);
 }

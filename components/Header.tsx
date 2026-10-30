@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import { Arrow, Cross, SectionIcon } from "./icon-widgets/icons";
 import { COMMON_TEXTS, WEEKLY_SERVICES } from "@/lib/constants/helper_data";
 import { NextGathering } from "./widgets/FooterWidgets";
+import HomeBand from "./widgets/Home-band";
 export default function Header() {
   return (
     <>
@@ -147,6 +148,7 @@ export default function Header() {
           </div>
         </div>
       </section>
+      {/* <HomeBand items={[{ label: "Worship" }, { label: "Prayer" }, { label: "Community" }, { label: "Fellowship" }, { label: "Community" }, { label: "Community" }, { label: "Community" }]} /> */}
     </>
   );
 }

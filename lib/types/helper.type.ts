@@ -73,3 +73,29 @@ export type Video = { id: string; title: string; date: string };
 export type Status = "idle" | "sending" | "success" | "error";
 
 export type Next = { name: string; when: string; secondsLeft: number; live: boolean };
+
+export type Ministry = {
+  slug: string;
+  name: string;
+  heroTitle: string;
+  heroAccent: string;
+  tagline: string;
+  cardText: string;
+  intro: string;
+  about: string[];
+  whatWeDo: { title: string; text: string }[];
+  values: string[];
+  verse: { text: string; ref: string };
+  ages?: string;
+  meets?: { day: string; time: string; place?: string };
+};
+
+export type Verse = {
+  text: string;
+  ref: string;
+};
+
+export type BandItem = {
+  label: string;
+  href?: string;
+};
