@@ -1,8 +1,8 @@
 import Link from "next/link";
 import Navbar from "./Navbar";
-import { Arrow, Cross } from "./icons";
-import { COMMON_TEXTS, FIRST_VISIT } from "@/lib/constants/helper_texts";
-
+import { Arrow, Cross, SectionIcon } from "./icon-widgets/icons";
+import { COMMON_TEXTS, WEEKLY_SERVICES } from "@/lib/constants/helper_data";
+import { NextGathering } from "./widgets/FooterWidgets";
 export default function Header() {
   return (
     <>
@@ -33,13 +33,16 @@ export default function Header() {
 
             <h1 className="mt-6 font-serif text-[44px] font-semibold leading-[1.05] tracking-tight text-[#fbf7f0] sm:text-6xl md:text-7xl xl:text-[84px]">
               A place to belong.
-              <span className="block italic text-red-500">A people to grow with.</span>
+              <span className="block italic text-red-500">
+                A people to grow with.
+              </span>
             </h1>
 
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-stone-300 md:text-[19px]">
-              We are a Christ-centred community devoted to worshipping God, loving one
-              another and serving our city. Wherever you are on your journey, there is a
-              seat saved for you and a family ready to welcome you.
+              We are a Christ-centred community devoted to worshipping God,
+              loving one another and serving our city. Wherever you are on your
+              journey, there is a seat saved for you and a family ready to
+              welcome you.
             </p>
 
             <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
@@ -62,49 +65,62 @@ export default function Header() {
 
             {/* Quick trust points */}
             <ul className="mt-12 flex flex-wrap gap-x-8 gap-y-3 text-sm text-stone-300">
-              {["All are welcome", "Programs for every age", "Join in person or online"].map(
-                (t) => (
-                  <li key={t} className="flex items-center gap-2.5">
-                    <Cross className="h-3 w-auto text-red-500" />
-                    {t}
-                  </li>
-                ),
-              )}
+              {[
+                "All are welcome",
+                "Programs for every age",
+                "Join in person or online",
+              ].map((t) => (
+                <li key={t} className="flex items-center gap-2.5">
+                  <Cross className="h-3 w-auto text-red-500" />
+                  {t}
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Right: first-visit card (no video here – messages live in the section below) */}
-          <aside className="hidden md:flex md:col-span-5 lg:pl-6 xl:pl-12">
-            <div className="relative overflow-hidden rounded-[28px] border border-white/15 bg-white/10 p-8 text-[#fbf7f0] shadow-[0_40px_80px_rgba(0,0,0,0.45)] backdrop-blur-xl md:p-9">
-              <Cross className="pointer-events-none absolute -right-4 -top-5 h-44 w-auto rotate-12 text-white/[0.06]" />
-
-              <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-red-400">
+          <aside
+            aria-labelledby="first-visit-heading"
+            className="hidden md:flex md:col-span-5 lg:pl-6 xl:pl-12"
+          >
+            <div className="w-full rounded-3xl bg-[#fbf7f0] p-8 text-[#1c1411] shadow-[0_30px_70px_rgba(0,0,0,0.35)] md:p-9">
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-red-700">
                 New here?
               </p>
-              <h2 className="mt-3 font-serif text-[30px] font-semibold leading-tight">
-                Your first Sunday with us
+              <h2
+                id="first-visit-heading"
+                className="mt-2 font-serif text-3xl font-semibold leading-tight"
+              >
+                Join us this Sunday
               </h2>
+              <p className="mt-2 text-base leading-relaxed text-stone-700">
+                Everyone is welcome. Here is when we meet.
+              </p>
 
-              <ol className="mt-7 divide-y divide-white/15">
-                {FIRST_VISIT.map((s, i) => (
-                  <li key={s.title} className="flex gap-5 py-5 first:pt-0">
-                    <span className="font-serif text-lg italic text-red-400">0{i + 1}</span>
-                    <div>
-                      <p className="font-serif text-xl font-semibold">{s.title}</p>
-                      <p className="mt-1 text-sm leading-relaxed text-stone-300">{s.text}</p>
-                    </div>
+              <div className="mt-6">
+                <NextGathering />
+              </div>
+
+              <ul className="mt-6 divide-y divide-[#1c1411]/10 border-t border-[#1c1411]/10">
+                {WEEKLY_SERVICES.map((s, i) => (
+                  <li
+                    key={i}
+                    className="flex flex-col gap-1 py-4 lg:flex-row lg:items-center lg:justify-between lg:gap-4"
+                  >
+                    <span className="flex items-center gap-3">
+                      <span className="text-red-700">
+                        <SectionIcon name="clock" size={18} />
+                      </span>
+                      <span className="font-serif text-lg font-semibold">
+                        {s.name}
+                      </span>
+                    </span>
+                    <span className="pl-8 text-base text-stone-700 lg:pl-0">
+                      {s.dayName} · {s.timeLabel}
+                    </span>
                   </li>
                 ))}
-              </ol>
-
-              <div className="mt-2 flex items-center justify-between gap-4 border-t border-white/15 pt-6">
-                <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-stone-400">
-                    Next Gathering
-                  </p>
-                  <p className="mt-1 font-serif text-lg font-semibold">{COMMON_TEXTS.Next_Gathering}</p>
-                </div>
-              </div>
+              </ul>
             </div>
           </aside>
         </div>
@@ -113,7 +129,8 @@ export default function Header() {
         <div className="border-t border-white/10 bg-[#1c1411]/70 backdrop-blur-md">
           <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-3 px-6 py-5 md:flex-row md:items-center md:px-8">
             <p className="font-serif text-[17px] italic text-stone-200 md:text-lg">
-              &ldquo;For where two or three gather in my name, there am I with them.&rdquo;
+              &ldquo;For where two or three gather in my name, there am I with
+              them.&rdquo;
               <span className="ml-3 font-sans text-[12px] font-semibold not-italic uppercase tracking-[0.2em] text-red-400">
                 Matthew 18:20
               </span>

@@ -1,55 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHero from "@/components/page-hero";
-import { Arrow, Clock, Cross, Eyebrow, Icon, Pin } from "@/components/icons";
-import { BELIEFS, COMMON_TEXTS, FAQS, FIRST_VISIT, GLOSSARY, NUTSHELL, SERVICE_TIMES, TEAM, TIMELINE, VALUES, VISIT_FACTS } from "@/lib/constants/helper_texts";
 import Footer from "@/components/footer";
+import { Arrow, Clock, Cross, DarkDecor, Divider, Eyebrow, Icon, LightDecor, Pin } from "@/components/icon-widgets/icons";
+import { BELIEFS, COMMON_TEXTS, FAQS, FIRST_VISIT, GLOSSARY, NUTSHELL, TEAM, TIMELINE, VALUES, VISIT_FACTS, WEEKLY_SERVICES } from "@/lib/constants/helper_data";
 
 export const metadata: Metadata = {
   title: "Our Story | About Us",
   description:
     "Who we are, what we believe and what to expect when you visit. Everyone is welcome, whether you are a lifelong believer or just curious.",
 };
-
-function Divider({ dark = false, center = false }: { dark?: boolean; center?: boolean }) {
-  return (
-    <div className={`mt-6 flex items-center gap-4 ${center ? "justify-center" : ""} ${dark ? "text-white/25" : "text-[#1c1411]/25"}`}>
-      <span className="h-px w-14 bg-current" />
-      <Cross className="text-red-600" />
-      <span className="h-px w-14 bg-current" />
-    </div>
-  );
-}
-
-// Decorative backdrop for light sections
-function LightDecor({ tone = "left" }: { tone?: "left" | "right" }) {
-  const side = tone === "left";
-  return (
-    <>
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(#1c1411_1px,transparent_1px)] opacity-[0.07] [background-size:26px_26px] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_75%)]" />
-      <div className={`absolute top-1/4 -z-10 h-[520px] w-[520px] rounded-full bg-red-500/10 blur-3xl ${side ? "-left-44" : "-right-44"}`} />
-      <div className={`pointer-events-none absolute top-16 -z-10 h-[560px] w-[560px] rounded-full border border-[#1c1411]/[0.07] ${side ? "-right-52" : "-left-52"}`} />
-      <div className={`pointer-events-none absolute top-40 -z-10 h-[360px] w-[360px] rounded-full border border-red-600/15 ${side ? "-right-28" : "-left-28"}`} />
-      <Cross className={`pointer-events-none absolute bottom-10 -z-10 h-[420px] w-auto text-[#1c1411]/[0.035] ${side ? "-left-16 -rotate-12" : "-right-16 rotate-12"}`} />
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#1c1411]/15 to-transparent" />
-    </>
-  );
-}
-
-// Decorative backdrop for dark sections
-function DarkDecor() {
-  return (
-    <>
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#2a1d18] via-[#1c1411] to-[#1c1411]" />
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] opacity-[0.05] [background-size:26px_26px] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_75%)]" />
-      <div className="absolute -right-40 -top-40 -z-10 h-[520px] w-[520px] rounded-full bg-red-600/15 blur-3xl" />
-      <div className="pointer-events-none absolute -left-48 bottom-0 -z-10 h-[520px] w-[520px] rounded-full border border-white/[0.07]" />
-      <Cross className="pointer-events-none absolute -right-16 top-1/2 -z-10 h-[560px] w-auto -translate-y-1/2 rotate-12 text-white/[0.04]" />
-    </>
-  );
-}
-
-/* ───────────────────────────────── Page ───────────────────────────────── */
 
 export default function PPLCAboutOurStoryPage() {
   return (
@@ -91,7 +51,6 @@ export default function PPLCAboutOurStoryPage() {
 
           <div className="lg:col-span-7">
             <ul className="grid gap-5 sm:grid-cols-1">
-              sdfdshfsdhfdis
               {NUTSHELL.map((n, i) => (
                 <li
                   key={n.title}
@@ -350,17 +309,17 @@ export default function PPLCAboutOurStoryPage() {
                 </div>
 
                 <ul className="divide-y divide-stone-200 px-7">
-                  {SERVICE_TIMES.map((s, i) => (
+                  {WEEKLY_SERVICES.map((s, i) => (
                     <li key={i} className="flex items-center justify-between gap-4 py-5">
                       <div className="flex items-center gap-3">
                         <span className="text-red-600"><Clock /></span>
                         <div>
                           <p className="font-serif text-lg font-semibold text-[#1c1411]">{s.name}</p>
-                          <p className="text-sm text-stone-500">{s.day}</p>
+                          <p className="text-sm text-stone-500">{s.dayName}</p>
                         </div>
                       </div>
                       <span className="rounded-full bg-[#1c1411] px-4 py-1.5 text-[13px] font-semibold tracking-wide text-white">
-                        {s.time}
+                        {s.timeLabel}
                       </span>
                     </li>
                   ))}
@@ -438,6 +397,36 @@ export default function PPLCAboutOurStoryPage() {
         </div>
       </section>
 
+      {/* ═════════ 11. Closing call to action ═════════ */}
+      <section className="relative isolate overflow-hidden bg-[#1c1411] px-6 py-24 md:py-32">
+        <DarkDecor />
+        <div className="mx-auto max-w-3xl text-center">
+          <Eyebrow light center>You are invited</Eyebrow>
+          <h2 className="mt-6 font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-[#fbf7f0] md:text-6xl">
+            There is a seat saved
+            <span className="block italic text-red-500">for you.</span>
+          </h2>
+          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-stone-300">
+            Come this Sunday, or watch online first. Either way, we would love to meet you.
+          </p>
+          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Link
+              href="/plan-a-visit"
+              className="group inline-flex items-center justify-center gap-3 rounded-full bg-[#ff0000] px-9 py-4 text-[13px] font-semibold uppercase tracking-[0.14em] text-white shadow-[0_12px_32px_rgba(255,0,0,0.35)] transition-all hover:-translate-y-px hover:bg-red-700"
+            >
+              Plan Your Visit
+              <span className="transition-transform duration-300 group-hover:translate-x-1"><Arrow /></span>
+            </Link>
+            <Link
+              href="/pplc-sermons"
+              className="inline-flex items-center justify-center rounded-full border border-white/40 px-9 py-4 text-[13px] font-semibold uppercase tracking-[0.14em] text-[#fbf7f0] transition-colors hover:border-[#fbf7f0] hover:bg-[#fbf7f0] hover:text-[#1c1411]"
+            >
+              Watch Online
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ═════════ 10. FAQ ═════════ */}
       <section id="faq" className="relative isolate scroll-mt-24 overflow-hidden bg-[#fbf7f0] px-6 py-20 md:py-28">
         <LightDecor tone="left" />
@@ -473,36 +462,6 @@ export default function PPLCAboutOurStoryPage() {
                 <p className="px-7 pb-7 pr-20 leading-relaxed text-stone-600">{f.a}</p>
               </details>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═════════ 11. Closing call to action ═════════ */}
-      <section className="relative isolate overflow-hidden bg-[#1c1411] px-6 py-24 md:py-32">
-        <DarkDecor />
-        <div className="mx-auto max-w-3xl text-center">
-          <Eyebrow light center>You are invited</Eyebrow>
-          <h2 className="mt-6 font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-[#fbf7f0] md:text-6xl">
-            There is a seat saved
-            <span className="block italic text-red-500">for you.</span>
-          </h2>
-          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-stone-300">
-            Come this Sunday, or watch online first. Either way, we would love to meet you.
-          </p>
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link
-              href="/partner"
-              className="group inline-flex items-center justify-center gap-3 rounded-full bg-[#ff0000] px-9 py-4 text-[13px] font-semibold uppercase tracking-[0.14em] text-white shadow-[0_12px_32px_rgba(255,0,0,0.35)] transition-all hover:-translate-y-px hover:bg-red-700"
-            >
-              Plan Your Visit
-              <span className="transition-transform duration-300 group-hover:translate-x-1"><Arrow /></span>
-            </Link>
-            <Link
-              href="/pplc-sermons"
-              className="inline-flex items-center justify-center rounded-full border border-white/40 px-9 py-4 text-[13px] font-semibold uppercase tracking-[0.14em] text-[#fbf7f0] transition-colors hover:border-[#fbf7f0] hover:bg-[#fbf7f0] hover:text-[#1c1411]"
-            >
-              Watch Online
-            </Link>
           </div>
         </div>
       </section>

@@ -2,9 +2,8 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Cross } from "./icons";
-import { SectionIcon } from "./SectionDecor";
-import { EventView } from "@/lib/utils/events";
+import { Cross, SectionIcon } from "./icon-widgets/icons";
+import { EventView } from "@/lib/types/helper.type";
 
 export default function EventsExplorer({ events }: { events: EventView[] }) {
   const categories = useMemo(

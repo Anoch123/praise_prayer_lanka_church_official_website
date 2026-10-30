@@ -1,21 +1,5 @@
-import { EVENTS, EVENT_TIMEZONE } from "@/lib/constants/events";
-
-// Everything is pre-formatted on the server so the page never mismatches between
-// server and browser timezones.
-export type EventView = {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  location: string;
-  href?: string;
-  monthLabel: string; // "November 2026"
-  monthShort: string; // "Nov"
-  day: string; // "06"
-  weekday: string; // "Friday"
-  timeLabel: string; // "7:00 PM – 9:00 PM" | "Dec 4 – Dec 6"
-  gcalUrl: string;
-};
+import { EVENT_TIMEZONE, EVENTS } from "../constants/helper_data";
+import { EventView } from "../types/helper.type";
 
 const fmt = (opts: Intl.DateTimeFormatOptions) =>
   new Intl.DateTimeFormat("en-US", { timeZone: EVENT_TIMEZONE, ...opts });

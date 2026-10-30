@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { DESCRIPTIONS, NAV_LINKS, SOCIALS } from "@/lib/constants/navbar";
-import { common_images } from "@/lib/constants/common_images";
-import { Arrow, Chevron, Cross, SocialIcon } from "@/components/icons";
-import { COMMON_TEXTS } from "@/lib/constants/helper_texts";
+import { Arrow, Chevron, Cross, SocialIcon } from "@/components/icon-widgets/icons";
+import { COMMON_IMAGES } from "@/lib/constants/helper_images";
+import { COMMON_TEXTS, DESCRIPTIONS, NAV_LINKS, SOCIALS } from "@/lib/constants/helper_data";
+import FeaturCardNewHere from "./widgets/feature-card-new-here";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -59,36 +59,6 @@ export default function Navbar() {
         ref={headerRef}
         className="fixed inset-x-0 top-0 z-50 font-sans"
       >
-        {/* ───────── Utility strip (desktop only, collapses on scroll) ───────── */}
-        {/* <div
-          className={`hidden overflow-hidden bg-[#1c1411] text-stone-300 transition-[max-height,opacity] duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] md:block ${
-            scrolled ? "max-h-0 opacity-0" : "max-h-10 opacity-100"
-          }`}
-        >
-          <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-8 text-[12.5px] tracking-wide">
-            <div className="flex items-center gap-6">
-              <span className="flex items-center gap-2">
-                <Cross className="text-red-500" />
-                <span className="font-medium text-stone-100">{common_texts.Service_time}</span>
-              </span>
-              <span className="hidden text-stone-400 lg:inline">{common_texts.Church_addr}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              {SOCIAL_LINKS.map((s) => (
-              <a
-                key={s.label}
-                href={s.href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={s.label}
-                className="transition-colors hover:text-red-600"
-              >
-                <SocialIcon name={s.icon} />
-              </a>
-            ))}
-            </div>
-          </div>
-        </div> */}
 
         {/* ───────── Main bar ───────── */}
         <div
@@ -113,20 +83,12 @@ export default function Navbar() {
               className="flex items-center gap-3"
             >
               <Image
-                src={common_images.App_logo}
+                src={COMMON_IMAGES.App_logo}
                 width={80}
                 height={80}
                 alt={`${COMMON_TEXTS.App_name} logo`}
                 className={`w-auto transition-all duration-300 ${scrolled ? "h-10" : "h-12"}`}
               />
-              {/* <span className="hidden flex-col leading-none lg:flex">
-                <span className="font-serif text-[19px] font-semibold tracking-tight text-[#1c1411]">
-                  {common_texts.App_name}
-                </span>
-                <span className="mt-1.5 text-[10.5px] font-semibold uppercase tracking-[0.28em] text-red-600">
-                  Come as you are
-                </span>
-              </span> */}
             </Link>
 
             {/* Desktop nav */}
@@ -175,7 +137,7 @@ export default function Navbar() {
             {/* Desktop CTAs */}
             <div className="hidden items-center gap-3 md:flex">
               <Link
-                href="/give"
+                href="/contact-us"
                 className="inline-flex items-center gap-2 rounded-full bg-[#ff0000] px-6 py-2.5 text-[13px] font-semibold uppercase tracking-[0.12em] text-white shadow-[0_6px_16px_rgba(255,0,0,0.25)] transition-all hover:-translate-y-px hover:bg-red-700"
               >
                 Contact Us
@@ -219,24 +181,7 @@ export default function Navbar() {
               >
                 <div className="border-b border-stone-200 bg-[#fbf7f0] shadow-[0_30px_50px_rgba(28,20,17,0.12)]">
                   <div className="mx-auto grid max-w-7xl grid-cols-12 gap-10 px-8 py-10">
-                    {/* Featured card */}
-                    <div className="relative col-span-4 overflow-hidden rounded-3xl bg-[#1c1411] p-8 text-white">
-                      <Cross className="absolute -right-3 -top-4 h-40 w-auto rotate-12 text-white/[0.06]" />
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-red-400">
-                        New here?
-                      </p>
-                      <h3 className="mt-4 font-serif text-[28px] leading-tight">
-                        There&apos;s a seat saved for you this Sunday.
-                      </h3>
-                      <p className="mt-3 text-sm text-stone-400">{COMMON_TEXTS.Service_time}</p>
-                      <Link
-                        href="/partner"
-                        onClick={() => setOpenDesktopMenu(null)}
-                        className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-[13px] font-semibold uppercase tracking-[0.1em] text-[#1c1411] transition-colors hover:bg-red-600 hover:text-white"
-                      >
-                        Plan your visit <Arrow />
-                      </Link>
-                    </div>
+                    <FeaturCardNewHere setOpenDesktopMenu={setOpenDesktopMenu} />
 
                     {/* Link list */}
                     <div className="col-span-8">
@@ -244,7 +189,7 @@ export default function Navbar() {
                         {link.label}
                       </p>
                       <div className="grid grid-cols-1 gap-x-8 lg:grid-cols-2">
-                        {link.children!.map((child, i) => (
+                        {link.children!.map((child: any, i : any) => (
                           <Link
                             key={child.href + child.label}
                             href={child.href}
@@ -334,7 +279,7 @@ export default function Navbar() {
                 >
                   <div className="overflow-hidden">
                     <div className="mb-5 ml-9 flex flex-col border-l-2 border-red-600/30 pl-5">
-                      {link.children!.map((child) => (
+                      {link.children!.map((child: any) => (
                         <Link
                           key={child.href + child.label}
                           href={child.href}
@@ -368,7 +313,7 @@ export default function Navbar() {
 
           <div className="flex gap-3">
             <Link
-              href="/give"
+              href="/contact-us"
               onClick={() => setOpen(false)}
               className="flex flex-1 items-center justify-center rounded-full bg-[#ff0000] px-5 py-4 text-[15px] font-semibold uppercase tracking-[0.1em] text-white"
             >

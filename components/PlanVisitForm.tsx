@@ -1,21 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Arrow, Cross } from "./icons";
+import { Arrow, Cross } from "./icon-widgets/icons";
+import { Status, WeeklyService } from "@/lib/types/helper.type";
+import { inputClass, labelClass, MAX_GUESTS, WHEN } from "@/lib/constants/helper_data";
 
-export type VisitService = { id: string; name: string; day: string; time: string };
-
-const WHEN = ["This Sunday", "Next Sunday", "Not sure yet"];
-const MAX_GUESTS = 10;
-
-type Status = "idle" | "sending" | "success" | "error";
-
-const inputClass =
-  "w-full rounded-2xl border border-stone-300 bg-white px-5 py-4 text-[16px] text-[#1c1411] outline-none transition-colors placeholder:text-stone-400 focus:border-red-600 focus:ring-4 focus:ring-red-600/10";
-const labelClass =
-  "mb-2 block text-[11px] font-semibold uppercase tracking-[0.24em] text-stone-500";
-
-export default function PlanVisitForm({ services }: { services: VisitService[] }) {
+export default function PlanVisitForm({ services }: { services: WeeklyService[] }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -52,7 +42,7 @@ export default function PlanVisitForm({ services }: { services: VisitService[] }
           email: email.trim(),
           phone: phone.trim(),
           service: services.find((s) => s.id === serviceId)?.name ?? "",
-          serviceTime: services.find((s) => s.id === serviceId)?.time ?? "",
+          serviceTime: services.find((s) => s.id === serviceId)?.timeLabel ?? "",
           when,
           guests,
           kids,
@@ -146,7 +136,7 @@ export default function PlanVisitForm({ services }: { services: VisitService[] }
               >
                 <span>
                   <span className="block font-serif text-lg font-semibold text-[#1c1411]">{s.name}</span>
-                  <span className="block text-sm text-stone-500">{s.day} · {s.time}</span>
+                  <span className="block text-sm text-stone-500">{s.day} · {s.timeLabel}</span>
                 </span>
                 <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border transition-colors ${on ? "border-red-600 bg-red-600 text-white" : "border-stone-300 bg-white"}`}>
                   {on && (

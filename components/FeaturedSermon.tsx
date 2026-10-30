@@ -1,15 +1,8 @@
 "use client";
 
+import { Video } from "@/lib/types/helper.type";
 import { useState } from "react";
-import type { Video } from "@/lib/utils/youtube";
-
-function Play({ size = 30 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-      <path d="M4 2.5v11l9-5.5-9-5.5Z" />
-    </svg>
-  );
-}
+import { Play } from "./icon-widgets/icons";
 
 // Big click-to-play player for the most recent sermon.
 export default function FeaturedSermon({ video }: { video: Video }) {

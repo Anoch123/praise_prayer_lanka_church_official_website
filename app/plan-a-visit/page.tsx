@@ -1,56 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PlanVisitForm from "@/components/PlanVisitForm";
-import { Arrow, Cross, Eyebrow } from "@/components/icons";
 import PageHero from "@/components/page-hero";
-import { DarkDecor, Divider, LightDecor, SectionIcon } from "@/components/SectionDecor";
 import Footer from "@/components/footer";
-import { FAQS } from "@/lib/constants/helper_texts";
+import { Arrow, Cross, DarkDecor, Divider, Eyebrow, LightDecor, SectionIcon } from "@/components/icon-widgets/icons";
+import { AT_A_GLANCE, COMMON_TEXTS, FAQS, GOOD_TO_KNOW, STEPS, WEEKLY_SERVICES } from "@/lib/constants/helper_data";
 
 export const metadata: Metadata = {
   title: "Plan a Visit",
   description:
     "New here? Find our service times and location, see what to expect on your first Sunday, and let us know you're coming.",
 };
-
-/* ─────────────────────────────────────────────────────────────────────────────
-   EDIT YOUR CONTENT HERE – everything marked TODO should be replaced with your
-   church's real details.
-   ───────────────────────────────────────────────────────────────────────────── */
-
-const SERVICES = [
-  { id: "sun-1", name: "Sunday Worship", day: "Sunday", time: "9:00 AM" }, // TODO
-  { id: "sun-2", name: "Sunday Worship", day: "Sunday", time: "11:00 AM" }, // TODO
-  { id: "wed", name: "Midweek Prayer", day: "Wednesday", time: "7:00 PM" }, // TODO
-];
-
-const ADDRESS_LINE_1 = "123 Church Street"; // TODO
-const ADDRESS_LINE_2 = "Your City, Country"; // TODO
-const DIRECTIONS_URL = "#"; // TODO: Google Maps link, e.g. https://maps.google.com/?q=...
-const MAP_EMBED_URL = ""; // TODO: Google Maps → Share → Embed a map → copy the src="…" URL
-
-const AT_A_GLANCE = [
-  { icon: "clock", label: "When", value: "Sundays at 9:00 AM & 11:00 AM" }, // TODO
-  { icon: "pin", label: "Where", value: `${ADDRESS_LINE_1}, ${ADDRESS_LINE_2}` },
-  { icon: "heart", label: "What to wear", value: "Come as you are. Casual or smart, both are welcome." },
-  { icon: "smile", label: "Children", value: "Warmly welcomed, with a dedicated programme." }, // TODO
-];
-
-const STEPS = [
-  { title: "Arrive & be welcomed", text: "Friendly greeters will meet you at the door, answer any questions and show you where to go. Arriving about 10 minutes early helps you settle in." },
-  { title: "Worship together", text: "We sing and pray together for about half an hour. Join in or simply listen, whatever feels comfortable." },
-  { title: "Hear a message", text: "A practical talk from the Bible, explained in everyday language, for believers and newcomers alike." },
-  { title: "Stay for tea", text: "Linger afterwards, meet some of our church family and ask anything on your mind. There is no pressure at all." },
-];
-
-const GOOD_TO_KNOW = [
-  { icon: "clock", title: "How long?", text: "Around 90 minutes." }, // TODO
-  { icon: "car", title: "Parking", text: "Free parking on site. Greeters can direct you." }, // TODO
-  { icon: "users", title: "Accessibility", text: "Step-free entrance and accessible facilities." }, // TODO
-  { icon: "coffee", title: "Cost", text: "Free. Nobody is expected to give anything." },
-];
-
-/* ───────────────────────────────── Page ───────────────────────────────── */
 
 export default function PlanAVisitPage() {
   return (
@@ -169,7 +129,7 @@ export default function PlanAVisitPage() {
 
           <div className="lg:col-span-7">
             <div className="relative rounded-[28px] border border-stone-200 bg-white p-6 shadow-[0_40px_80px_rgba(0,0,0,0.4)] md:p-10">
-              <PlanVisitForm services={SERVICES} />
+              <PlanVisitForm services={WEEKLY_SERVICES} />
             </div>
           </div>
         </div>
@@ -192,9 +152,9 @@ export default function PlanAVisitPage() {
             <div className="relative lg:col-span-7">
               <div className="absolute -bottom-3 -right-3 h-full w-full rounded-[30px] bg-[#1c1411] md:-bottom-4 md:-right-4" />
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl bg-stone-200 ring-1 ring-[#1c1411]/10 md:aspect-video">
-                {MAP_EMBED_URL ? (
+                {COMMON_TEXTS.Map_Embed_URL ? (
                   <iframe
-                    src={MAP_EMBED_URL}
+                    src={COMMON_TEXTS.Map_Embed_URL}
                     title="Map to our church"
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
@@ -206,8 +166,7 @@ export default function PlanAVisitPage() {
                     <span className="flex h-16 w-16 items-center justify-center rounded-full bg-red-600">
                       <SectionIcon name="pin" size={28} />
                     </span>
-                    <p className="font-serif text-2xl font-semibold">{ADDRESS_LINE_1}</p>
-                    <p className="text-stone-300">{ADDRESS_LINE_2}</p>
+                    <p className="font-serif text-2xl font-semibold">{COMMON_TEXTS.Address}</p>
                   </div>
                 )}
               </div>
@@ -225,14 +184,14 @@ export default function PlanAVisitPage() {
                 </div>
 
                 <ul className="divide-y divide-stone-200 px-7">
-                  {SERVICES.map((s) => (
+                  {WEEKLY_SERVICES.map((s) => (
                     <li key={s.id} className="flex items-center justify-between gap-4 py-5">
                       <div>
                         <p className="font-serif text-lg font-semibold text-[#1c1411]">{s.name}</p>
-                        <p className="text-sm text-stone-500">{s.day}</p>
+                        <p className="text-sm text-stone-500">{s.dayName}</p>
                       </div>
                       <span className="rounded-full bg-[#1c1411] px-4 py-1.5 text-[13px] font-semibold tracking-wide text-white">
-                        {s.time}
+                        {s.timeLabel}
                       </span>
                     </li>
                   ))}
@@ -242,12 +201,11 @@ export default function PlanAVisitPage() {
                   <div className="flex items-start gap-3 text-[#1c1411]">
                     <span className="mt-0.5 text-red-600"><SectionIcon name="pin" size={18} /></span>
                     <p className="leading-snug">
-                      <span className="block font-medium">{ADDRESS_LINE_1}</span>
-                      <span className="block text-stone-500">{ADDRESS_LINE_2}</span>
+                      <span className="block font-medium">{COMMON_TEXTS.Address}</span>
                     </p>
                   </div>
                   <a
-                    href={DIRECTIONS_URL}
+                    href={COMMON_TEXTS.Direction_URLS}
                     className="group mt-5 inline-flex items-center gap-2 rounded-full bg-[#ff0000] px-6 py-3 text-[12px] font-semibold uppercase tracking-[0.14em] text-white shadow-[0_10px_24px_rgba(255,0,0,0.3)] transition-colors hover:bg-red-700"
                   >
                     Get Directions

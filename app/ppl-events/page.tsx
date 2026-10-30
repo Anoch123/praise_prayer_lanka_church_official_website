@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import Link from "next/link";
-import { DarkDecor, Divider, LightDecor, SectionIcon } from "@/components/SectionDecor";
-import { Arrow, Cross, Eyebrow } from "@/components/icons";
+import { Arrow, Cross, DarkDecor, Divider, Eyebrow, LightDecor, SectionIcon } from "@/components/icon-widgets/icons";
 import PageHero from "@/components/page-hero";
 import { getUpcomingEvents } from "@/lib/utils/events";
 import EventsExplorer from "@/components/EventsExplorer";
-import { WEEKLY } from "@/lib/constants/events";
 import Footer from "@/components/footer";
+import { WEEKLY_SERVICES } from "@/lib/constants/helper_data";
+import NewToChurch from "@/components/New-to-church";
 
 export const metadata: Metadata = {
   title: "Upcoming Events",
@@ -14,8 +15,11 @@ export const metadata: Metadata = {
     "Services, prayer nights, youth and children's events and community days. See what's coming up at our church and add it to your calendar.",
 };
 
+export const instant = false;
 
-export default function CalendarPage() {
+export default async function PPLCEventsPage() {
+  await connection();
+
   const events = getUpcomingEvents();
   const next = events[0];
   const rest = events.slice(1);
@@ -27,7 +31,8 @@ export default function CalendarPage() {
         title="Upcoming"
         accent="events."
         description="Services, prayer nights, youth and children's events and community days. There is always something happening, and everyone is welcome."
-        breadcrumbs={[{ label: "About Us", href: "/about" }, { label: "Calendar" }]}
+        breadcrumbs={[{ label: "About Us", href: "/about" }, { label: "EVENTS" }]}
+        image={"/images/hero-bg-3000.jpg"}
       />
 
       {/* ═════════ Next up ═════════ */}
@@ -154,7 +159,7 @@ export default function CalendarPage() {
           </div>
 
           <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {WEEKLY.map((w) => (
+            {WEEKLY_SERVICES.map((w) => (
               <li
                 key={w.name}
                 className="group relative overflow-hidden rounded-3xl border border-stone-200 bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:bg-[#1c1411] hover:shadow-[0_28px_60px_rgba(28,20,17,0.2)]"
@@ -169,43 +174,14 @@ export default function CalendarPage() {
                 <h3 className="mt-2 font-serif text-2xl font-semibold text-[#1c1411] transition-colors group-hover:text-[#fbf7f0]">
                   {w.name}
                 </h3>
-                <p className="mt-1 font-medium text-[#1c1411] transition-colors group-hover:text-stone-200">{w.time}</p>
-                <p className="mt-3 text-sm leading-relaxed text-stone-600 transition-colors group-hover:text-stone-300">{w.text}</p>
+                <p className="mt-1 font-medium text-[#1c1411] transition-colors group-hover:text-stone-200">{w.timeLabel}</p>
               </li>
             ))}
           </ul>
         </div>
       </section>
 
-      {/* ═════════ Closing ═════════ */}
-      <section className="relative isolate overflow-hidden bg-[#1c1411] px-6 py-20 md:py-24">
-        <DarkDecor />
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="font-serif text-4xl font-semibold leading-tight text-[#fbf7f0] md:text-5xl">
-            New to our church?
-            <span className="block italic text-red-500">We&apos;d love to meet you.</span>
-          </h2>
-          <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-stone-300">
-            Pick any event above, or join us on a Sunday. Let us know you&apos;re coming and
-            we&apos;ll save you a seat.
-          </p>
-          <div className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link
-              href="/plan-a-visit"
-              className="group inline-flex items-center justify-center gap-3 rounded-full bg-[#ff0000] px-9 py-4 text-[13px] font-semibold uppercase tracking-[0.14em] text-white shadow-[0_12px_32px_rgba(255,0,0,0.35)] transition-all hover:-translate-y-px hover:bg-red-700"
-            >
-              Plan Your Visit
-              <span className="transition-transform duration-300 group-hover:translate-x-1"><Arrow /></span>
-            </Link>
-            <Link
-              href="/pplc-sermons"
-              className="inline-flex items-center justify-center rounded-full border border-white/40 px-9 py-4 text-[13px] font-semibold uppercase tracking-[0.14em] text-[#fbf7f0] transition-colors hover:border-[#fbf7f0] hover:bg-[#fbf7f0] hover:text-[#1c1411]"
-            >
-              Watch Online
-            </Link>
-          </div>
-        </div>
-      </section>
+      <NewToChurch />
 
       <Footer />
     </>

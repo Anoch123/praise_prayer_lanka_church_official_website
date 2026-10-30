@@ -1,14 +1,6 @@
-import { VIDEOS } from "@/lib/constants/home";
+import { VIDEOS } from "../constants/helper_data";
+import { Video } from "../types/helper.type";
 
-export type Video = { id: string; title: string; date: string };
-
-// .env.local
-//   YOUTUBE_CHANNEL_ID=UCxxxxxxxxxxxxxxxxxxxxxx   (required for live data)
-//   YOUTUBE_API_KEY=AIza...                        (optional: unlocks the FULL video list)
-//
-// With only the channel id we read the public RSS feed (latest ~15 videos, no key needed).
-// With an API key we page through the channel's uploads playlist (all videos).
-// If neither is set (or YouTube is unreachable) we fall back to VIDEOS in constants/home.
 const API_KEY = process.env.YOUTUBE_API_KEY;
 const CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID;
 const REVALIDATE = 60 * 60; // refresh from YouTube at most once an hour
@@ -33,7 +25,10 @@ function decode(s: string) {
     .replace(/&#39;/g, "'");
 }
 
-async function fromApi(max: number, playlist?: string): Promise<Video[] | null> {
+async function fromApi(
+  max: number,
+  playlist?: string,
+): Promise<Video[] | null> {
   "use cache";
   if (!API_KEY) return null;
   if (!playlist && !CHANNEL_ID?.startsWith("UC")) return null;
@@ -45,7 +40,9 @@ async function fromApi(max: number, playlist?: string): Promise<Video[] | null> 
 
   try {
     while (out.length < max) {
-      const url = new URL("https://www.googleapis.com/youtube/v3/playlistItems");
+      const url = new URL(
+        "https://www.googleapis.com/youtube/v3/playlistItems",
+      );
       url.searchParams.set("part", "snippet,contentDetails");
       url.searchParams.set("maxResults", String(Math.min(50, max)));
       url.searchParams.set("playlistId", playlistId);
@@ -59,11 +56,19 @@ async function fromApi(max: number, playlist?: string): Promise<Video[] | null> 
       for (const item of data.items ?? []) {
         const s = item.snippet;
         const id = item.contentDetails?.videoId ?? s?.resourceId?.videoId;
-        if (!s || !id || s.title === "Private video" || s.title === "Deleted video") continue;
+        if (
+          !s ||
+          !id ||
+          s.title === "Private video" ||
+          s.title === "Deleted video"
+        )
+          continue;
         out.push({
           id,
           title: s.title,
-          date: formatDate(item.contentDetails?.videoPublishedAt ?? s.publishedAt),
+          date: formatDate(
+            item.contentDetails?.videoPublishedAt ?? s.publishedAt,
+          ),
         });
       }
 
@@ -95,7 +100,9 @@ async function fromRss(
         const id = e.match(/<yt:videoId>(.*?)<\/yt:videoId>/)?.[1];
         const title = e.match(/<title>([\s\S]*?)<\/title>/)?.[1];
         const published = e.match(/<published>(.*?)<\/published>/)?.[1];
-        return id && title ? { id, title: decode(title), date: formatDate(published) } : null;
+        return id && title
+          ? { id, title: decode(title), date: formatDate(published) }
+          : null;
       })
       .filter(Boolean) as Video[];
     return videos.length ? videos : null;
@@ -105,7 +112,8 @@ async function fromRss(
 }
 
 async function getVideos(limit: number): Promise<Video[]> {
-  const videos = (await fromApi(limit)) ?? (await fromRss()) ?? (VIDEOS as Video[]);
+  const videos =
+    (await fromApi(limit)) ?? (await fromRss()) ?? (VIDEOS as Video[]);
   return videos.slice(0, limit);
 }
 

@@ -1,3 +1,3 @@
-export const common_images ={
+export const COMMON_IMAGES ={
     App_logo : "/images/logo.png",
 }

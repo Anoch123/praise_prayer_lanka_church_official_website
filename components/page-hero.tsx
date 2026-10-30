@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import { Cross, Eyebrow } from "./icons";
-import { PageHeroCrumb, PageHeroProps } from "@/lib/types/pageheo.type";
+import { Cross, Eyebrow } from "./icon-widgets/icons";
+import { PageHeroCrumb, PageHeroProps } from "@/lib/types/helper.type";
 
 export default function PageHero({
   title,
@@ -13,6 +13,8 @@ export default function PageHero({
   align = "left",
   showNavbar = true,
   className = "",
+  isSermonVideoLength = false,
+  sermonVideoLength,
 }: PageHeroProps) {
   const center = align === "center";
 
@@ -62,10 +64,16 @@ export default function PageHero({
                 {crumbs.map((c, i) => {
                   const last = i === crumbs.length - 1;
                   return (
-                    <span key={`${c.label}-${i}`} className="flex items-center gap-3">
+                    <span
+                      key={`${c.label}-${i}`}
+                      className="flex items-center gap-3"
+                    >
                       {i > 0 && <span className="text-red-500">/</span>}
                       {c.href && !last ? (
-                        <Link href={c.href} className="transition-colors hover:text-white">
+                        <Link
+                          href={c.href}
+                          className="transition-colors hover:text-white"
+                        >
                           {c.label}
                         </Link>
                       ) : (
@@ -92,7 +100,9 @@ export default function PageHero({
               className={`${eyebrow ? "mt-5" : ""} font-serif text-4xl font-semibold leading-[1.1] tracking-tight text-[#fbf7f0] sm:text-5xl md:text-6xl`}
             >
               {title}
-              {accent && <span className="block italic text-red-500">{accent}</span>}
+              {accent && (
+                <span className="block italic text-red-500">{accent}</span>
+              )}
             </h1>
 
             {description && (
@@ -105,6 +115,25 @@ export default function PageHero({
               </p>
             )}
           </div>
+
+          {isSermonVideoLength ? (
+            <div className="mt-6 flex flex-wrap items-center gap-x-10 gap-y-4 text-stone-300">
+              <div>
+                <p className="font-serif text-4xl font-semibold text-[#fbf7f0]">
+                  {sermonVideoLength}
+                </p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-stone-400">
+                  Messages
+                </p>
+              </div>
+              <span className="hidden h-10 w-px bg-white/15 sm:block" />
+              <p className="max-w-xs text-sm leading-relaxed">
+                New messages are added every week after our Sunday services.
+              </p>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </section>
     </>

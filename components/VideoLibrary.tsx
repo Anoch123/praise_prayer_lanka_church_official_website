@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import type { Video } from "@/lib/utils/youtube";
-import { Play } from "./icons";
+import { Play } from "./icon-widgets/icons";
+import { Video } from "@/lib/types/helper.type";
 
 const PAGE_SIZE = 12;
 
