@@ -244,7 +244,7 @@ export default function Navbar() {
                   href={link.href}
                   onClick={() => setOpen(false)}
                   style={delay}
-                  className={`flex items-baseline gap-4 border-b border-stone-200 py-6 font-serif text-[34px] font-semibold text-[#1c1411] transition-all duration-500 ease-out ${anim}`}
+                  className={`flex items-baseline gap-4 border-b border-stone-200 py-6 font-serif text-[27px] font-semibold text-[#1c1411] transition-all duration-500 ease-out ${anim}`}
                 >
                   <span className="text-sm italic text-red-600">0{i + 1}</span>
                   {link.label}
@@ -264,7 +264,7 @@ export default function Navbar() {
                     setOpenMobileMenu((v) => (v === link.href ? null : link.href))
                   }
                   aria-expanded={isOpen}
-                  className="flex w-full items-baseline justify-between py-6 font-serif text-[34px] font-semibold text-[#1c1411]"
+                  className="flex w-full items-baseline justify-between py-6 font-serif text-[27px] font-semibold text-[#1c1411]"
                 >
                   <span className="flex items-baseline gap-4">
                     <span className="text-sm italic text-red-600">0{i + 1}</span>
