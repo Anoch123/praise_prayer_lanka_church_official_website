@@ -18,8 +18,8 @@ export const COMMON_TEXTS ={
 }
 
 export const DEVELOPER_DETAILS ={
-  Develped_by : "Clova Softwares",
-  Developer_company : "https://clovasoftwares.com"
+  Develped_by : "9x Solutions",
+  Developer_company : "https://www.facebook.com/9xsolutions"
 }
 
 export const EVENT_TIMEZONE = "Asia/Colombo";
