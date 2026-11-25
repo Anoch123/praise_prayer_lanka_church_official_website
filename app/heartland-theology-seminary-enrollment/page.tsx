@@ -172,7 +172,7 @@ export default function EnrollmentPage() {
               width={84}
               height={84}
               priority
-              className="h-[110px] w-[110px] shrink-0"
+              className="h-[84px] w-[84px] shrink-0"
             />
             <div>
               <h1 className="text-[32px] font-black uppercase leading-none tracking-[0.005em] text-[#1b2a41]">
