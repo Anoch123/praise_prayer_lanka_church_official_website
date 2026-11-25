@@ -169,8 +169,8 @@ export default function EnrollmentPage() {
             <Image
               src="/forms/heartland-logo.png"
               alt="Heartland Theological Seminary seal"
-              width={110}
-              height={110}
+              width={84}
+              height={84}
               priority
               className="h-[110px] w-[110px] shrink-0"
             />
