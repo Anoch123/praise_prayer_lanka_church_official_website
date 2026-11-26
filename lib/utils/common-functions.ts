@@ -1,8 +1,7 @@
 import { io } from "next/cache";
 import { CHURCH_TZ_OFFSET_MINUTES, MINISTRIES, SERVICE_DURATION_MINUTES, WEEK, WEEKLY_SERVICES } from "../constants/helper_data";
-import { Next, Status_Admin_Dashboard } from "../types/helper.type";
+import { DashboardStats, Next, Status_Admin_Dashboard } from "../types/helper.type";
 import { CheckCircle2, Clock, Send, UserMinus, XCircle } from "lucide-react";
-import { DashboardStats } from "../services/admin-dashboard.service";
 
 // If the date string can be parsed, show it as a day / month block; otherwise show a calendar icon.
 export function parseDate(input: string): { day: string; month: string } | null {
