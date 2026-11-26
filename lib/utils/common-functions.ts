@@ -44,3 +44,17 @@ export default async function CurrentYear() {
 export function getMinistry(slug: string) {
   return MINISTRIES.find((m) => m.slug === slug);
 }
+
+/**
+ * Returns today's date in local YYYY-MM-DD format.
+ * This avoids UTC date differences when setting date input limits.
+ */
+export function getTodayISO() {
+  const today = new Date();
+
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}

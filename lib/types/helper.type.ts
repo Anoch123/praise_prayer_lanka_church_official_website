@@ -99,3 +99,30 @@ export type BandItem = {
   label: string;
   href?: string;
 };
+
+export type ApplicationStatus =
+  | "SUBMITTED"
+  | "UNDER_REVIEW"
+  | "ACCEPTED"
+  | "REJECTED"
+  | "WITHDRAWN";
+
+export interface EnrollmentResult {
+    success: boolean;
+    duplicate: boolean;
+    application_id: string;
+    reference_number: string;
+  }
+  
+export interface EnrollmentApiResponse {
+    success?: boolean;
+    duplicate?: boolean;
+    application_id?: string;
+    reference_number?: string;
+    error?: string;
+    message?: string;
+  }
+
+export interface EnrollmentFormProps {
+  fontClassName: string;
+}

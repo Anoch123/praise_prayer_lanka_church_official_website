@@ -1,4 +1,5 @@
 import { BandItem, ChurchEvent, Ministry, NavLink, Verse, WeeklyService } from "../types/helper.type";
+import { SeminaryEnrollmentFormValues } from "../validations/seminary-enrollment.schema";
 
 export const COMMON_TEXTS ={
   App_name : "Praise Prayer Lanka Church",
@@ -522,3 +523,83 @@ export const HOME_BAND_ITEMS: BandItem[] = [
   { label: "Events", href: "/calendar" },
   { label: "Give", href: "/give" },
 ];
+
+export const PROGRAMME_VALUE_TO_CODE = {
+  "Certificate in Ministerial Studies":
+    "CERTIFICATE_IN_MINISTERIAL_STUDIES",
+
+  "M.A. in Applied Theology":
+    "MA_IN_APPLIED_THEOLOGY",
+
+  "Master of Divinity (M.Div.)":
+    "MASTER_OF_DIVINITY",
+
+  "Diploma in theology (Dip.Th)":
+    "DIPLOMA_IN_THEOLOGY",
+
+  "Bachelor of theology (B.Th)":
+    "BACHELOR_OF_THEOLOGY",
+
+  "Doctor of Ministry (D.Min.)":
+    "DOCTOR_OF_MINISTRY",
+
+  unsure:
+    "UNSURE_REQUEST_ACADEMIC_ADVICE",
+} as const;
+
+export const PROGRAMME_OPTIONS = [
+  "Certificate in Ministerial Studies",
+  "M.A. in Applied Theology",
+  "Master of Divinity (M.Div.)",
+  "Diploma in theology (Dip.Th)",
+  "Bachelor of theology (B.Th)",
+  "Doctor of Ministry (D.Min.)",
+  "unsure",
+] as const;
+
+export const defaultValues: SeminaryEnrollmentFormValues = {
+  fullName: "",
+  dob: "",
+  nicPassport: "",
+  nationality: "",
+  address: "",
+  district: "",
+  postalCode: "",
+  mobile: "",
+  email: "",
+  language: "",
+
+  qualification: "",
+  institution: "",
+  yearCompleted: "",
+  fieldOfStudy: "",
+  otherTraining: "",
+
+  programme: [],
+
+  startPeriod: "",
+  heardFrom: "",
+
+  church: "",
+  denomination: "",
+  churchAddress: "",
+  pastor: "",
+  role: "",
+  yearsInMinistry: "",
+  ministrySetting: "",
+
+  spiritualFormation: "",
+  purpose: "",
+
+  endorsementName: "",
+  endorsementEmail: "",
+  endorsementPhone: "",
+
+  recommendName: "",
+  recommendEmail: "",
+  recommendPhone: "",
+
+  declaration: false,
+  signature: "",
+  signDate: "",
+};
