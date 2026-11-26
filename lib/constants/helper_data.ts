@@ -1,3 +1,4 @@
+import { FileText, LayoutDashboard } from "lucide-react";
 import { BandItem, ChurchEvent, Ministry, NavLink, Verse, WeeklyService } from "../types/helper.type";
 import { SeminaryEnrollmentFormValues } from "../validations/seminary-enrollment.schema";
 
@@ -603,3 +604,8 @@ export const defaultValues: SeminaryEnrollmentFormValues = {
   signature: "",
   signDate: "",
 };
+
+export const NAV_ITEMS = [
+  { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
+  { label: "Applications", href: "/admin/applications", icon: FileText },
+];

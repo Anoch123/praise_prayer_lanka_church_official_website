@@ -1,6 +1,8 @@
 import { io } from "next/cache";
 import { CHURCH_TZ_OFFSET_MINUTES, MINISTRIES, SERVICE_DURATION_MINUTES, WEEK, WEEKLY_SERVICES } from "../constants/helper_data";
-import { Next } from "../types/helper.type";
+import { Next, Status_Admin_Dashboard } from "../types/helper.type";
+import { CheckCircle2, Clock, Send, UserMinus, XCircle } from "lucide-react";
+import { DashboardStats } from "../services/admin-dashboard.service";
 
 // If the date string can be parsed, show it as a day / month block; otherwise show a calendar icon.
 export function parseDate(input: string): { day: string; month: string } | null {
@@ -57,4 +59,48 @@ export function getTodayISO() {
   const day = String(today.getDate()).padStart(2, "0");
 
   return `${year}-${month}-${day}`;
+}
+
+export function getStatuses(stats: DashboardStats): Status_Admin_Dashboard[] {
+  return [
+    {
+      label: "Submitted",
+      description: "Waiting for review",
+      value: stats.submitted,
+      icon: Send,
+      color: "#2f62b5",
+    },
+    {
+      label: "Under Review",
+      description: "Currently being reviewed",
+      value: stats.underReview,
+      icon: Clock,
+      color: "#d97706",
+    },
+    {
+      label: "Accepted",
+      description: "Successfully accepted",
+      value: stats.accepted,
+      icon: CheckCircle2,
+      color: "#0d9488",
+    },
+    {
+      label: "Rejected",
+      description: "Applications rejected",
+      value: stats.rejected,
+      icon: XCircle,
+      color: "#be123c",
+    },
+    {
+      label: "Withdrawn",
+      description: "Withdrawn applications",
+      value: stats.withdrawn,
+      icon: UserMinus,
+      color: "#94a3b8",
+    },
+  ];
+}
+
+export function getShare(value: number, total: number) {
+  return total > 0 ? (value / total) * 100 : 0;
 }

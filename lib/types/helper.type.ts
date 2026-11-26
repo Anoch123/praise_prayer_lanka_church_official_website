@@ -1,3 +1,5 @@
+import { LucideIcon } from "lucide-react";
+
 export type FooterLink = {
   label: string;
   href: string;
@@ -125,4 +127,129 @@ export interface EnrollmentApiResponse {
 
 export interface EnrollmentFormProps {
   fontClassName: string;
+}
+
+export type AdminRole =
+  | "SUPER_ADMIN";
+
+export interface AdminProfile {
+  id: string;
+  full_name: string;
+  role: AdminRole;
+  is_active: boolean;
+}
+
+export interface AuthenticatedAdmin {
+  id: string;
+  email: string | undefined;
+  profile: AdminProfile;
+}
+
+export interface Status_Admin_Dashboard {
+  label: string;
+  description: string;
+  value: number;
+  icon: LucideIcon;
+  color: string;
+}
+
+export interface DashboardStats {
+  totalApplications: number;
+  submitted: number;
+  underReview: number;
+  accepted: number;
+  rejected: number;
+  withdrawn: number;
+}
+
+export interface SeminaryApplication {
+  id: string;
+  reference_number: string | null;
+  full_name: string;
+  email: string;
+  mobile_whatsapp: string;
+  programme_interest: string | null;
+  status: ApplicationStatus;
+  submitted_at: string;
+  created_at: string;
+  updated_at: string;
+
+  selected_programmes: SeminaryApplicationProgramme[];
+}
+
+export interface AdminApplicationsFilters {
+  search?: string;
+  status?: ApplicationStatus | "ALL";
+  programme?: string;
+}
+
+export interface AdminApplicationsResponse {
+  applications: SeminaryApplication[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
+
+export interface SeminaryApplicationDetails {
+  id: string;
+  reference_number: string | null;
+
+  // Personal information
+  full_name: string;
+  date_of_birth: string;
+  nic_passport_number: string | null;
+  nationality: string | null;
+  residential_address: string;
+  district_city: string;
+  postal_code: string | null;
+  mobile_whatsapp: string;
+  email: string;
+  preferred_language: string | null;
+
+  // Educational background
+  highest_qualification: string;
+  institution_name: string;
+  year_completed: number | null;
+  field_of_study: string | null;
+  other_theological_training: string | null;
+
+  // Programme preferences
+  programme_interest: string | null;
+  preferred_starting_period: string | null;
+  heard_about_heartland: string | null;
+
+  // Church and ministry
+  current_church: string;
+  denomination_affiliation: string | null;
+  church_address: string;
+  church_pastor_name: string | null;
+  ministry_role: string | null;
+  years_in_church_ministry: number | null;
+  current_ministry_setting: string | null;
+
+  // Spiritual background
+  spiritual_background: string;
+  theological_study_purpose: string | null;
+
+  // Declaration
+  declaration_accepted: boolean;
+  declaration_signed_name: string;
+  declaration_date: string;
+
+  // Administration
+  status: ApplicationStatus;
+  internal_notes: string | null;
+  submitted_at: string;
+  created_at: string;
+  updated_at: string;
+
+  selected_programmes: SeminaryApplicationProgramme[];
+}
+
+export interface SeminaryApplicationProgramme {
+  application_id: string;
+  programme_code: string;
+  programme_label: string;
+  created_at: string;
 }
