@@ -1,6 +1,7 @@
 import { FileText, LayoutDashboard } from "lucide-react";
 import { BandItem, ChurchEvent, Ministry, NavLink, Verse, WeeklyService } from "../types/helper.type";
 import { SeminaryEnrollmentFormValues } from "../validations/seminary-enrollment.schema";
+import z from "zod";
 
 export const COMMON_TEXTS ={
   App_name : "Praise Prayer Lanka Church",
@@ -609,3 +610,18 @@ export const NAV_ITEMS = [
   { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
   { label: "Applications", href: "/admin/applications", icon: FileText },
 ];
+
+export const MAX_BODY_SIZE = 100_000;
+
+export const requiredText = z.string().trim().min(1).max(500);
+export const optionalText = z.string().trim().max(500);
+
+export const programmeCodes = [
+  "CERTIFICATE_IN_MINISTERIAL_STUDIES",
+  "MA_IN_APPLIED_THEOLOGY",
+  "MASTER_OF_DIVINITY",
+  "DIPLOMA_IN_THEOLOGY",
+  "BACHELOR_OF_THEOLOGY",
+  "DOCTOR_OF_MINISTRY",
+  "UNSURE_REQUEST_ACADEMIC_ADVICE",
+] as const;

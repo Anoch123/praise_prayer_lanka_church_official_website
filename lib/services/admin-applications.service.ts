@@ -20,6 +20,7 @@ interface GetAdminApplicationsParams {
 /**
  * Retrieve paginated applications for the admin listing.
  */
+
 export async function getAdminApplications({
   page = 1,
   pageSize = 10,
@@ -44,6 +45,7 @@ export async function getAdminApplications({
         mobile_whatsapp,
         programme_interest,
         status,
+        nic_passport_number,
         submitted_at,
         created_at,
         updated_at
@@ -51,7 +53,8 @@ export async function getAdminApplications({
       { count: "exact" },
     );
 
-  // Search by applicant name, email or reference number.
+  // Search by applicant name, email, or NIC/passport number.
+  // Reference number is deliberately excluded.
   const search = filters.search?.trim();
 
   if (search) {
@@ -62,7 +65,7 @@ export async function getAdminApplications({
         [
           `full_name.ilike.%${escapedSearch}%`,
           `email.ilike.%${escapedSearch}%`,
-          `reference_number.ilike.%${escapedSearch}%`,
+          `nic_passport_number.ilike.%${escapedSearch}%`,
         ].join(","),
       );
     }
@@ -73,12 +76,12 @@ export async function getAdminApplications({
     query = query.eq("status", filters.status);
   }
 
-  // Existing programme_interest filter.
+  // Filter by programme interest.
   if (filters.programme?.trim()) {
     query = query.eq("programme_interest", filters.programme.trim());
   }
 
-  // Fetch the current page of applications.
+  // Fetch the current page.
   const { data, count, error } = await query
     .order("submitted_at", { ascending: false })
     .range(from, to);
@@ -97,7 +100,6 @@ export async function getAdminApplications({
   const applications = data ?? [];
   const total = count ?? 0;
 
-  // If there are no applications, return an empty result.
   if (applications.length === 0) {
     return {
       applications: [],
@@ -108,12 +110,11 @@ export async function getAdminApplications({
     };
   }
 
-  // Collect application IDs from the current page.
   const applicationIds = applications.map(
     (application) => application.id,
   );
 
-  // Fetch selected programmes for all applications in one query.
+  // Fetch selected programmes for all applications on this page.
   const { data: programmes, error: programmesError } = await supabase
     .from("seminary_application_programmes")
     .select(`
@@ -136,7 +137,6 @@ export async function getAdminApplications({
     throw new Error("APPLICATIONS_PROGRAMMES_FETCH_FAILED");
   }
 
-  // Group programmes by application ID.
   const programmesByApplication = new Map<
     string,
     SeminaryApplicationProgramme[]
@@ -154,7 +154,6 @@ export async function getAdminApplications({
     );
   }
 
-  // Attach selected programmes to each application.
   const applicationsWithProgrammes = applications.map(
     (application) => ({
       ...application,

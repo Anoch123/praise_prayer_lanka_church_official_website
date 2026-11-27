@@ -21,9 +21,20 @@ export default function ApplicationCards({
             <ApplicantIdentity application={application} />
 
             <div className="text-sm">
-              <p className="font-medium text-[#0f1a2b]">
-                {application.programme_interest ?? "—"}
-              </p>
+              <div className="space-y-1">
+                {application.selected_programmes.length > 0 ? (
+                  application.selected_programmes.map((programme) => (
+                    <div
+                      key={programme.programme_code}
+                      className="text-sm text-slate-600"
+                    >
+                      {programme.programme_label}
+                    </div>
+                  ))
+                ) : (
+                  <span className="text-slate-400">—</span>
+                )}
+              </div>
               <p className="mt-1 text-xs text-slate-500">
                 {application.reference_number ?? "—"} ·{" "}
                 {formatDate(application.submitted_at)}

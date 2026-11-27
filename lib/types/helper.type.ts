@@ -104,10 +104,8 @@ export type BandItem = {
 
 export type ApplicationStatus =
   | "SUBMITTED"
-  | "UNDER_REVIEW"
   | "ACCEPTED"
-  | "REJECTED"
-  | "WITHDRAWN";
+  | "REJECTED";
 
 export interface EnrollmentResult {
     success: boolean;
@@ -173,6 +171,7 @@ export interface SeminaryApplication {
   submitted_at: string;
   created_at: string;
   updated_at: string;
+  nic_passport_number: string;
 
   selected_programmes: SeminaryApplicationProgramme[];
 }
@@ -252,4 +251,17 @@ export interface SeminaryApplicationProgramme {
   programme_code: string;
   programme_label: string;
   created_at: string;
+}
+
+export interface UseAdminApplicationReturn {
+  application: SeminaryApplicationDetails | null;
+  isLoading: boolean;
+  error: string | null;
+  refreshApplication: () => Promise<void>;
+}
+
+export interface AdminApplicationApiResponse {
+  application?: SeminaryApplicationDetails | null;
+  error?: string;
+  message?: string;
 }

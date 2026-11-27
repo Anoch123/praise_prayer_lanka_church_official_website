@@ -4,10 +4,8 @@ export type ApplicationRow = AdminApplicationsResponse["applications"][number];
 
 export const statusOptions = [
   { value: "SUBMITTED", label: "Submitted", color: "#2f62b5" },
-  { value: "UNDER_REVIEW", label: "Under Review", color: "#d97706" },
   { value: "ACCEPTED", label: "Accepted", color: "#0d9488" },
   { value: "REJECTED", label: "Rejected", color: "#be123c" },
-  { value: "WITHDRAWN", label: "Withdrawn", color: "#64748b" },
 ];
 
 export function formatDate(value: string | null | undefined) {

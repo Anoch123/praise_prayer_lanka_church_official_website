@@ -30,6 +30,7 @@ const applicationSchema = z.object({
   mobile_whatsapp: requiredText,
   email: z.string().trim().email().max(254),
   preferred_language: z.enum(["", "English", "Sinhala", "Tamil"]),
+  programme_interest: z.enum(programmeCodes).optional(),
 
   highest_qualification: requiredText,
   institution_name: requiredText,
@@ -68,7 +69,12 @@ const applicationSchema = z.object({
   declaration_accepted: z.literal(true),
   declaration_signed_name: requiredText,
   declaration_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-}).strict();
+})
+  .strict()
+  .transform((application) => ({
+    ...application,
+    programme_interest: application.programmes[0],
+  }));
 
 const referenceSchema = z.object({
   reference_type: z.enum([

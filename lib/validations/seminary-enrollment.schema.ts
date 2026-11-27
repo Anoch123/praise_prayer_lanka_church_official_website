@@ -56,6 +56,26 @@ const isValidDate = (value: string) => {
   );
 };
 
+const isAtLeastAge = (value: string, minimumAge: number) => {
+  if (!isValidDate(value)) return false;
+
+  const [year, month, day] = value.split("-").map(Number);
+
+  const today = new Date();
+
+  let age = today.getFullYear() - year;
+
+  const birthdayHasNotOccurred =
+    today.getMonth() + 1 < month ||
+    (today.getMonth() + 1 === month && today.getDate() < day);
+
+  if (birthdayHasNotOccurred) {
+    age--;
+  }
+
+  return age >= minimumAge;
+};
+
 const todayISO = () => {
   const now = new Date();
 
@@ -71,6 +91,7 @@ const validDate = (
   options?: {
     preventFuture?: boolean;
     earliestYear?: number;
+    minimumAge?: number;
   },
 ) =>
   z
@@ -88,6 +109,13 @@ const validDate = (
       (value) =>
         !options?.preventFuture || !isValidDate(value) || value <= todayISO(),
       `${label} cannot be in the future.`,
+    )
+    .refine(
+      (value) =>
+        !options?.minimumAge ||
+        !isValidDate(value) ||
+        isAtLeastAge(value, options.minimumAge),
+      `${label}: Applicants must be at least ${options?.minimumAge} years old.`,
     );
 
 /* --------------------------------
@@ -140,10 +168,11 @@ export const seminaryEnrollmentSchema = z.object({
 
   dob: validDate("Date of birth", {
     preventFuture: true,
+    minimumAge: 20,
   }),
 
   // Personal information
-  nicPassport: requiredText("NIC / Passport number", 30),
+  nicPassport: requiredText("NIC / Passport number", 12),
   nationality: requiredText("Nationality", 100),
   postalCode: requiredText("Postal code", 20),
   language: requiredLanguage,
@@ -186,7 +215,7 @@ export const seminaryEnrollmentSchema = z.object({
   programme: z
     .array(z.enum(PROGRAMME_OPTIONS))
     .min(1, "Please select at least one programme.")
-    .max(7, "You cannot select more than seven programmes.")
+    .max(1, "You cannot select more than one programmes.")
     .refine(
       (values) => new Set(values).size === values.length,
       "Duplicate programme selections are not allowed.",

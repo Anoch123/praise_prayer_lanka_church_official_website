@@ -18,7 +18,7 @@ export default function SearchField({ value, onChange }: SearchFieldProps) {
         value={value}
         onChange={(event) => onChange(event.target.value)}
         aria-label="Search applications"
-        placeholder="Search name, email, reference..."
+        placeholder="Search name, email, nic/passport..."
         className="h-11 w-full rounded-xl bg-slate-100 pl-11 pr-11 text-sm text-[#0f1a2b] outline-none transition placeholder:text-slate-500 focus:bg-white focus:ring-2 focus:ring-[#2f62b5]"
       />
       {value && (

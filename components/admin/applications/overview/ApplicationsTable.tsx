@@ -16,7 +16,7 @@ export default function ApplicationsTable({
         <thead className="border-y border-slate-100 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
           <tr>
             <th className="px-6 py-4 font-semibold">Applicant</th>
-            <th className="px-4 py-4 font-semibold">Reference</th>
+            <th className="px-4 py-4 font-semibold">NIC</th>
             <th className="px-4 py-4 font-semibold">Programme</th>
             <th className="px-4 py-4 font-semibold">Submitted</th>
             <th className="px-4 py-4 font-semibold">Status</th>
@@ -36,7 +36,7 @@ export default function ApplicationsTable({
                 <ApplicantIdentity application={application} />
               </td>
               <td className="whitespace-nowrap px-4 py-4 font-medium text-slate-600">
-                {application.reference_number ?? "—"}
+                {application.nic_passport_number ?? "—"}
               </td>
               <td className="px-4 py-4 text-slate-600">
                 <div className="space-y-1">

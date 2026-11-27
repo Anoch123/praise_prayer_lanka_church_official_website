@@ -1,12 +1,10 @@
 
 import { Suspense } from "react";
+
 import { connection } from "next/server";
-import { notFound } from "next/navigation";
 
 import ApplicationDetails from "@/components/admin/applications/ApplicationDetails";
 import ApplicationsLoading from "@/components/Loading";
-
-import { getAdminApplicationById } from "@/lib/services/admin-applications.service";
 
 interface ApplicationPageProps {
   params: Promise<{
@@ -19,16 +17,9 @@ async function ApplicationDetailsContent({
 }: ApplicationPageProps) {
   await connection();
 
-  // Access URL parameters inside Suspense.
   const { id } = await params;
 
-  const application = await getAdminApplicationById(id);
-
-  if (!application) {
-    notFound();
-  }
-
-  return <ApplicationDetails application={application} />;
+  return <ApplicationDetails applicationId={id} key={id} />;
 }
 
 export default function ApplicationPage({

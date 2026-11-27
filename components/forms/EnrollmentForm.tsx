@@ -30,6 +30,8 @@ export default function EnrollmentForm({ fontClassName }: EnrollmentFormProps) {
     submissionError,
     isSubmitting,
     resetEnrollment,
+    checkNicPassport,
+    isCheckingNic,
   } = useSeminaryEnrollment();
 
   const {
@@ -181,9 +183,24 @@ export default function EnrollmentForm({ fontClassName }: EnrollmentFormProps) {
 
                   <Field
                     label="NIC / Passport no. (if applicable)"
-                    registration={register("nicPassport")}
-                    error={errors.nicPassport?.message}
-                    maxLength={30}
+                    registration={{
+                      ...register("nicPassport"),
+                      onBlur: async (event) => {
+                        await register("nicPassport").onBlur(event);
+
+                        const value = form.getValues("nicPassport");
+
+                        if (value.trim()) {
+                          await checkNicPassport(value);
+                        }
+                      },
+                    }}
+                    error={
+                      isCheckingNic
+                        ? "Checking NIC / Passport number..."
+                        : errors.nicPassport?.message
+                    }
+                    maxLength={12}
                   />
 
                   <Field
