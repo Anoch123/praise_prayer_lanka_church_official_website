@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from "next/server";
 
 import { requireAdminRole } from "@/lib/services/admin-auth.service";
@@ -9,6 +8,7 @@ import type { ApplicationStatus } from "@/lib/types/helper.type";
 
 const VALID_STATUSES: ApplicationStatus[] = [
   "SUBMITTED",
+  "UNDER_REVIEW",
   "ACCEPTED",
   "REJECTED",
 ];
@@ -17,12 +17,9 @@ interface RouteContext {
   params: Promise<{ id: string }>;
 }
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: RouteContext,
-) {
+export async function PATCH(request: NextRequest, { params }: RouteContext) {
   try {
-    // 1. Verify that the requester is an active Super Admin.
+    // 1. Verify Super Admin.
     const admin = await requireAdminRole(["SUPER_ADMIN"]);
 
     if (!admin) {
@@ -32,7 +29,7 @@ export async function PATCH(
       );
     }
 
-    // 2. Get and validate the application ID.
+    // 2. Get application ID.
     const { id: applicationId } = await params;
 
     if (!applicationId) {
@@ -42,7 +39,7 @@ export async function PATCH(
       );
     }
 
-    // 3. Validate the requested status.
+    // 3. Validate requested status.
     const body = await request.json().catch(() => null);
     const requestedStatus = body?.status;
 
@@ -62,13 +59,10 @@ export async function PATCH(
 
     const status = requestedStatus as ApplicationStatus;
 
-    // 4. Update the application in Supabase.
-    const result = await updateAdminApplicationStatus(
-      applicationId,
-      status,
-    );
+    // 4. Update application.
+    const result = await updateAdminApplicationStatus(applicationId, status);
 
-    // 5. No email is sent if the status has not changed.
+    // 5. Avoid duplicate emails.
     if (!result.changed) {
       return NextResponse.json({
         success: true,
@@ -82,14 +76,26 @@ export async function PATCH(
       });
     }
 
-    // 6. Send the custom email after the database update.
+    // 6. Send status-specific email.
     try {
-      await sendApplicationStatusEmail({
+      console.info(`[Application Email] Sending ${status} notification`, {
+        applicationId,
+        applicantEmail: result.application.email,
+      });
+
+      const emailResponse = await sendApplicationStatusEmail({
         applicantName: result.application.full_name,
         applicantEmail: result.application.email,
-        referenceNumber:
-          result.application.reference_number || result.application.id,
+        referenceNumber: result.application.nic_passport_number,
         status,
+      });
+
+      console.info(`[Application Email] ${status} delivery details`, {
+        applicationId,
+        messageId: emailResponse.messageId,
+        accepted: emailResponse.accepted,
+        rejected: emailResponse.rejected,
+        response: emailResponse.response,
       });
 
       return NextResponse.json({
@@ -99,11 +105,18 @@ export async function PATCH(
         previousStatus: result.previousStatus,
         email: {
           sent: true,
-          message: "Status notification email sent successfully.",
+          message: `${status} notification email sent successfully.`,
         },
       });
     } catch (emailError) {
-      console.error("Application status email failed:", emailError);
+      console.error(
+        `[Application Email] Failed to send ${status} notification`,
+        {
+          applicationId,
+          applicantEmail: result.application.email,
+          error: emailError instanceof Error ? emailError.message : emailError,
+        },
+      );
 
       return NextResponse.json({
         success: true,
@@ -112,17 +125,14 @@ export async function PATCH(
         previousStatus: result.previousStatus,
         email: {
           sent: false,
-          message: "The status was saved, but email delivery failed.",
+          message: `The application status was updated, but the ${status} notification email failed.`,
         },
       });
     }
   } catch (error) {
     console.error("Application status update failed:", error);
 
-    if (
-      error instanceof Error &&
-      error.message === "APPLICATION_NOT_FOUND"
-    ) {
+    if (error instanceof Error && error.message === "APPLICATION_NOT_FOUND") {
       return NextResponse.json(
         { success: false, message: "Application not found." },
         { status: 404 },

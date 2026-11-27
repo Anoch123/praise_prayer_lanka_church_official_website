@@ -104,6 +104,7 @@ export type BandItem = {
 
 export type ApplicationStatus =
   | "SUBMITTED"
+  | "UNDER_REVIEW"
   | "ACCEPTED"
   | "REJECTED";
 
@@ -269,6 +270,7 @@ export interface AdminApplicationApiResponse {
 export interface AdminApplicationStatusCounts {
   ALL: number;
   SUBMITTED: number;
+  UNDER_REVIEW: number;
   ACCEPTED: number;
   REJECTED: number;
 }

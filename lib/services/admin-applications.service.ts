@@ -90,17 +90,24 @@ export async function getAdminApplications({
     return count ?? 0;
   }
 
-  const [allCount, submittedCount, acceptedCount, rejectedCount] =
-    await Promise.all([
-      getStatusCount(),
-      getStatusCount("SUBMITTED"),
-      getStatusCount("ACCEPTED"),
-      getStatusCount("REJECTED"),
-    ]);
+  const [
+    allCount,
+    submittedCount,
+    underReviewCount,
+    acceptedCount,
+    rejectedCount,
+  ] = await Promise.all([
+    getStatusCount(),
+    getStatusCount("SUBMITTED"),
+    getStatusCount("UNDER_REVIEW"),
+    getStatusCount("ACCEPTED"),
+    getStatusCount("REJECTED"),
+  ]);
 
   const statusCounts = {
     ALL: allCount,
     SUBMITTED: submittedCount,
+    UNDER_REVIEW: underReviewCount,
     ACCEPTED: acceptedCount,
     REJECTED: rejectedCount,
   };

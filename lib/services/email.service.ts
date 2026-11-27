@@ -43,6 +43,7 @@ export async function sendEmail({
       name: fromName,
       address: fromEmail,
     },
+    replyTo: fromEmail,
     to,
     subject,
     html,

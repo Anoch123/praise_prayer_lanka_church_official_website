@@ -39,9 +39,10 @@ export default function ApplicationsOverview() {
     const allowedStatuses = [
       "ALL",
       "SUBMITTED",
+      "UNDER_REVIEW",
       "ACCEPTED",
       "REJECTED",
-    ] as const;
+    ];
 
     if (!(allowedStatuses as readonly string[]).includes(status)) {
       return;
@@ -49,7 +50,7 @@ export default function ApplicationsOverview() {
 
     setFilters({
       ...apiFilters,
-      status: status as (typeof allowedStatuses)[number],
+      status: status as NonNullable<typeof apiFilters.status>,
     });
   };
 

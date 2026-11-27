@@ -46,13 +46,13 @@ const APPLICATION_STATUSES: {
   iconColor: string;
 }[] = [
   {
-    value: "SUBMITTED",
-    label: "Submitted",
-    description: "The application has been received.",
-    icon: Inbox,
-    badge: "bg-blue-50 text-[#2f62b5] ring-blue-200",
-    selected: "border-[#2f62b5] bg-blue-50",
-    iconColor: "text-[#2f62b5]",
+    value: "UNDER_REVIEW",
+    label: "Under Review",
+    description: "The admissions team is reviewing the application.",
+    icon: CalendarClock,
+    badge: "bg-amber-50 text-amber-700 ring-amber-200",
+    selected: "border-amber-600 bg-amber-50",
+    iconColor: "text-amber-600",
   },
   {
     value: "ACCEPTED",
@@ -74,8 +74,16 @@ const APPLICATION_STATUSES: {
   },
 ];
 
-const getStatus = (value: ApplicationStatus) =>
-  APPLICATION_STATUSES.find((item) => item.value === value);
+const getStatus = (value: ApplicationStatus) => {
+  if (value === "SUBMITTED") {
+    return {
+      label: "Submitted",
+      badge: "bg-blue-50 text-[#2f62b5] ring-blue-200",
+    };
+  }
+
+  return APPLICATION_STATUSES.find((item) => item.value === value);
+};
 
 type TabId =
   | "personal"
@@ -115,15 +123,19 @@ export default function ApplicationDetails({
   } = useAdminApplication(applicationId);
 
   const [selectedStatus, setSelectedStatus] =
-    useState<ApplicationStatus>("SUBMITTED");
+    useState<ApplicationStatus>("UNDER_REVIEW");
   const [activeTab, setActiveTab] = useState<TabId>("personal");
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
-  useEffect(() => {
-    if (application) {
-      setSelectedStatus(application.status);
-    }
-  }, [application]);
+useEffect(() => {
+  if (application) {
+    setSelectedStatus(
+      application.status === "SUBMITTED"
+        ? "UNDER_REVIEW"
+        : application.status,
+    );
+  }
+}, [application]);
 
   const handleConfirm = async () => {
     setIsConfirmOpen(false);

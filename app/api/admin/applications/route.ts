@@ -7,6 +7,7 @@ import type {
 
 const APPLICATION_STATUSES: ApplicationStatus[] = [
   "SUBMITTED",
+  "UNDER_REVIEW",
   "ACCEPTED",
   "REJECTED"
 ];

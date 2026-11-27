@@ -8,6 +8,7 @@ interface StatusFilterProps {
 const options = [
   { value: "ALL", label: "All", color: "" },
   { value: "SUBMITTED", label: "Submitted", color: "#2f62b5" },
+  { value: "UNDER_REVIEW", label: "Under Review", color: "#d97706" },
   { value: "ACCEPTED", label: "Accepted", color: "#16a34a" },
   { value: "REJECTED", label: "Rejected", color: "#dc2626" },
 ];

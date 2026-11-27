@@ -6,7 +6,7 @@ import type { ApplicationStatus } from "@/lib/types/helper.type";
 
 export interface UpdatedApplicationStatus {
   id: string;
-  reference_number: string | null;
+  nic_passport_number: string;
   full_name: string;
   email: string;
   status: ApplicationStatus;
@@ -24,7 +24,7 @@ export async function updateAdminApplicationStatus(
 
   const { data: existingApplication, error: fetchError } = await supabase
     .from("seminary_applications")
-    .select("id, reference_number, full_name, email, status")
+    .select("id, full_name, email, status, nic_passport_number")
     .eq("id", applicationId)
     .maybeSingle();
 
@@ -54,7 +54,7 @@ export async function updateAdminApplicationStatus(
       updated_at: new Date().toISOString(),
     })
     .eq("id", applicationId)
-    .select("id, reference_number, full_name, email, status")
+    .select("id, full_name, email, status, nic_passport_number")
     .single();
 
   if (updateError || !updatedApplication) {
