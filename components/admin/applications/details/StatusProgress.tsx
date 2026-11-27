@@ -27,17 +27,10 @@ export default function StatusProgress({ status }: { status: string }) {
   // Unknown statuses have no place on the timeline.
   if (!completed) return null;
 
-  const decision =
-    status === "ACCEPTED"
-      ? "Accepted"
-      : status === "REJECTED"
-        ? "Rejected"
-        : "Decision";
-
   const steps = [
     { label: "Submitted", icon: Send },
     { label: "Under Review", icon: Clock },
-    { label: decision, icon: status === "REJECTED" ? X : Check },
+    { label: "Accepted", icon: status === "REJECTED" ? X : Check },
   ];
 
   return (

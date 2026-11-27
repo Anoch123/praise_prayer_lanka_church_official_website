@@ -1,12 +1,16 @@
-import { statusOptions } from "../overview/utils";
-
-const options = [{ value: "ALL", label: "All", color: "" }, ...statusOptions];
 
 interface StatusFilterProps {
   selected: string;
   onSelect: (value: string) => void;
   countFor: (value: string) => number;
 }
+
+const options = [
+  { value: "ALL", label: "All", color: "" },
+  { value: "SUBMITTED", label: "Submitted", color: "#2f62b5" },
+  { value: "ACCEPTED", label: "Accepted", color: "#16a34a" },
+  { value: "REJECTED", label: "Rejected", color: "#dc2626" },
+];
 
 export default function StatusFilter({
   selected,
@@ -40,7 +44,9 @@ export default function StatusFilter({
                 style={{ backgroundColor: option.color }}
               />
             )}
+
             {option.label}
+
             <span
               className={`rounded-full px-2 text-xs tabular-nums ${
                 active ? "bg-white/20" : "bg-white text-slate-600"

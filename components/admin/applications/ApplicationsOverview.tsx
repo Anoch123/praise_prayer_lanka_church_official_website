@@ -11,7 +11,6 @@ import ApplicationsTable from "../applications/overview/ApplicationsTable";
 import EmptyState from "../applications/overview/EmptyState";
 import SearchField from "../applications/overview/SearchField";
 import StatusFilter from "../applications/overview/StatusFilter";
-import { useApplicationFilters } from "../applications/overview/useApplicationFilters";
 
 export default function ApplicationsOverview() {
   const { fullName } = useAdmin();
@@ -27,10 +26,7 @@ export default function ApplicationsOverview() {
 
   const applications = data?.applications ?? [];
   const total = data?.total ?? 0;
-
-  // Keep the existing status-count helper.
-  // Do not use its locally filtered results for displaying applications.
-  const localFilters = useApplicationFilters(applications);
+  const statusCounts = data?.statusCounts;
 
   const handleSearchChange = (search: string) => {
     setFilters({
@@ -40,17 +36,20 @@ export default function ApplicationsOverview() {
   };
 
   const handleStatusChange = (status: string) => {
-    if (
-      status !== "ALL" &&
-      status !== "SUBMITTED" &&
-      status !== "ACCEPTED"
-    ) {
+    const allowedStatuses = [
+      "ALL",
+      "SUBMITTED",
+      "ACCEPTED",
+      "REJECTED",
+    ] as const;
+
+    if (!(allowedStatuses as readonly string[]).includes(status)) {
       return;
     }
 
     setFilters({
       ...apiFilters,
-      status,
+      status: status as (typeof allowedStatuses)[number],
     });
   };
 
@@ -60,6 +59,16 @@ export default function ApplicationsOverview() {
       status: "ALL",
       programme: "",
     });
+  };
+
+  const countFor = (status: string) => {
+    if (!statusCounts) return 0;
+
+    return (
+      statusCounts[
+        status as keyof typeof statusCounts
+      ] ?? 0
+    );
   };
 
   return (
@@ -97,7 +106,7 @@ export default function ApplicationsOverview() {
           <StatusFilter
             selected={apiFilters.status ?? "ALL"}
             onSelect={handleStatusChange}
-            countFor={localFilters.countFor}
+            countFor={countFor}
           />
         </div>
 
@@ -105,6 +114,7 @@ export default function ApplicationsOverview() {
           <div className="flex min-h-[250px] items-center justify-center">
             <div className="flex flex-col items-center gap-3">
               <div className="h-9 w-9 animate-spin rounded-full border-4 border-[#2f62b5] border-t-transparent" />
+
               <p className="text-sm text-slate-500">
                 Loading applications...
               </p>
@@ -116,7 +126,9 @@ export default function ApplicationsOverview() {
               Unable to load applications
             </h3>
 
-            <p className="mt-2 text-sm text-slate-500">{error}</p>
+            <p className="mt-2 text-sm text-slate-500">
+              {error}
+            </p>
 
             <button
               type="button"

@@ -21,6 +21,7 @@ interface GetAdminApplicationsParams {
  * Retrieve paginated applications for the admin listing.
  */
 
+
 export async function getAdminApplications({
   page = 1,
   pageSize = 10,
@@ -34,7 +35,78 @@ export async function getAdminApplications({
   const from = (safePage - 1) * safePageSize;
   const to = from + safePageSize - 1;
 
-  let query = supabase
+  const search = filters.search?.trim();
+  const escapedSearch = search?.replace(/[,%()]/g, "") ?? "";
+  const programme = filters.programme?.trim();
+
+  // Apply the same search and programme filters to every query.
+  // Status is applied separately so each tab gets its own count.
+  function applyCommonFilters(query: any) {
+    let filteredQuery = query;
+
+    if (escapedSearch) {
+      filteredQuery = filteredQuery.or(
+        [
+          `full_name.ilike.%${escapedSearch}%`,
+          `email.ilike.%${escapedSearch}%`,
+          `nic_passport_number.ilike.%${escapedSearch}%`,
+          `reference_number.ilike.%${escapedSearch}%`,
+          `programme_interest.ilike.%${escapedSearch}%`,
+        ].join(","),
+      );
+    }
+
+    if (programme) {
+      filteredQuery = filteredQuery.eq("programme_interest", programme);
+    }
+
+    return filteredQuery;
+  }
+
+  // Get counts across ALL matching records, not just the current page.
+  async function getStatusCount(status?: string): Promise<number> {
+    let countQuery = supabase
+      .from("seminary_applications")
+      .select("id", { count: "exact", head: true });
+
+    countQuery = applyCommonFilters(countQuery);
+
+    if (status) {
+      countQuery = countQuery.eq("status", status);
+    }
+
+    const { count, error } = await countQuery;
+
+    if (error) {
+      console.error("Application status count failed:", {
+        status,
+        message: error.message,
+        code: error.code,
+      });
+
+      throw new Error("APPLICATION_STATUS_COUNTS_FAILED");
+    }
+
+    return count ?? 0;
+  }
+
+  const [allCount, submittedCount, acceptedCount, rejectedCount] =
+    await Promise.all([
+      getStatusCount(),
+      getStatusCount("SUBMITTED"),
+      getStatusCount("ACCEPTED"),
+      getStatusCount("REJECTED"),
+    ]);
+
+  const statusCounts = {
+    ALL: allCount,
+    SUBMITTED: submittedCount,
+    ACCEPTED: acceptedCount,
+    REJECTED: rejectedCount,
+  };
+
+  // Get the current page of applications.
+  let applicationsQuery = supabase
     .from("seminary_applications")
     .select(
       `
@@ -53,36 +125,17 @@ export async function getAdminApplications({
       { count: "exact" },
     );
 
-  // Search by applicant name, email, or NIC/passport number.
-  // Reference number is deliberately excluded.
-  const search = filters.search?.trim();
+  applicationsQuery = applyCommonFilters(applicationsQuery);
 
-  if (search) {
-    const escapedSearch = search.replace(/[,%()]/g, "");
-
-    if (escapedSearch) {
-      query = query.or(
-        [
-          `full_name.ilike.%${escapedSearch}%`,
-          `email.ilike.%${escapedSearch}%`,
-          `nic_passport_number.ilike.%${escapedSearch}%`,
-        ].join(","),
-      );
-    }
-  }
-
-  // Filter by application status.
   if (filters.status && filters.status !== "ALL") {
-    query = query.eq("status", filters.status);
+    applicationsQuery = applicationsQuery.eq("status", filters.status);
   }
 
-  // Filter by programme interest.
-  if (filters.programme?.trim()) {
-    query = query.eq("programme_interest", filters.programme.trim());
-  }
-
-  // Fetch the current page.
-  const { data, count, error } = await query
+  const {
+    data,
+    count,
+    error,
+  } = await applicationsQuery
     .order("submitted_at", { ascending: false })
     .range(from, to);
 
@@ -107,6 +160,7 @@ export async function getAdminApplications({
       page: safePage,
       pageSize: safePageSize,
       totalPages: Math.ceil(total / safePageSize),
+      statusCounts,
     };
   }
 
@@ -114,7 +168,6 @@ export async function getAdminApplications({
     (application) => application.id,
   );
 
-  // Fetch selected programmes for all applications on this page.
   const { data: programmes, error: programmesError } = await supabase
     .from("seminary_application_programmes")
     .select(`
@@ -169,6 +222,7 @@ export async function getAdminApplications({
     page: safePage,
     pageSize: safePageSize,
     totalPages: Math.ceil(total / safePageSize),
+    statusCounts,
   };
 }
 

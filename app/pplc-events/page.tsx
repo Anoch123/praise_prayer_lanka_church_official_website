@@ -169,7 +169,7 @@ export default async function PPLCEventsPage() {
                   <SectionIcon name="calendar" size={22} />
                 </span>
                 <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.26em] text-red-600 transition-colors group-hover:text-red-400">
-                  {w.day}
+                  {/* {w.day} */}
                 </p>
                 <h3 className="mt-2 font-serif text-2xl font-semibold text-[#1c1411] transition-colors group-hover:text-[#fbf7f0]">
                   {w.name}

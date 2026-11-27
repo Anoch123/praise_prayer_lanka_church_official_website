@@ -265,3 +265,19 @@ export interface AdminApplicationApiResponse {
   error?: string;
   message?: string;
 }
+
+export interface AdminApplicationStatusCounts {
+  ALL: number;
+  SUBMITTED: number;
+  ACCEPTED: number;
+  REJECTED: number;
+}
+
+export interface AdminApplicationsResponse {
+  applications: SeminaryApplication[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  statusCounts: AdminApplicationStatusCounts;
+}

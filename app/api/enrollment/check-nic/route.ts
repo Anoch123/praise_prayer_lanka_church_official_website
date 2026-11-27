@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Server-side privileged client.
-    const supabase = createSupabaseAdminClient();
+    const supabase = await createSupabaseAdminClient();
 
     const { data, error } = await supabase
       .from("seminary_applications")
