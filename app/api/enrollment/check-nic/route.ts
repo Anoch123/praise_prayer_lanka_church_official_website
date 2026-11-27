@@ -1,7 +1,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
 export async function POST(request: NextRequest) {
   try {
@@ -32,7 +32,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = await createSupabaseServerClient();
+    // Server-side privileged client.
+    const supabase = createSupabaseAdminClient();
 
     const { data, error } = await supabase
       .from("seminary_applications")
@@ -42,12 +43,17 @@ export async function POST(request: NextRequest) {
       .maybeSingle();
 
     if (error) {
-      console.error("NIC duplicate check failed:", error);
+      console.error("NIC duplicate check failed:", {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+      });
 
       return NextResponse.json(
         {
           success: false,
-          message: "Unable to verify NIC / Passport number. Please try again.",
+          message:
+            "Unable to verify NIC / Passport number. Please try again.",
         },
         { status: 500 },
       );
